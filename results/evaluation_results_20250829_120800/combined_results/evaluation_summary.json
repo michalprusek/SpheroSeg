@@ -1,0 +1,11 @@
+{
+  "total_models_evaluated": 16,
+  "total_datasets": 1,
+  "successful_evaluations_per_dataset": {
+    "Merged_DTS_SpheroSeg": 16
+  },
+  "failed_evaluations_per_dataset": {
+    "Merged_DTS_SpheroSeg": 0
+  },
+  "evaluation_timestamp": "20250829_120813"
+}

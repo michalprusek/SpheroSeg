@@ -1,0 +1,1074 @@
+%% 
+%% Copyright 2007-2024 Elsevier Ltd
+%% 
+%% This file is part of the 'Elsarticle Bundle'.
+%% ---------------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.3 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'Elsarticle Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+%% Template article for Elsevier's document class `elsarticle'
+%% with numbered style bibliographic references
+%% SP 2008/03/01
+%% $Id: elsarticle-template-num.tex 249 2024-04-06 10:51:24Z rishi $
+%%
+\documentclass[preprint,12pt]{elsarticle}
+
+%% Use the option review to obtain double line spacing
+%% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+
+
+% Dataset naming macros for consistency
+\newcommand{\app}{SpheroSeg}
+\newcommand{\dsHQ}{SpheroHQ}
+\newcommand{\dsMix}{SpheroMix}
+\newcommand{\dsDTS}{DTS}
+
+%% For including figures, graphicx.sty has been loaded in
+%% elsarticle.cls. If you prefer to use the old commands
+%% please give \usepackage{epsfig}
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage[final]{microtype}
+\usepackage[hidelinks]{hyperref}
+
+%% přidal Průšek!!!
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\sisetup{
+  detect-weight = true,
+  detect-inline-weight = math,
+  table-number-alignment = center,
+  table-text-alignment   = center
+}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage{tabularx} 
+
+% Make all subsections bold
+\usepackage{titlesec}
+\titleformat{\subsection}
+  {\bfseries\itshape\normalsize}
+  {\thesubsection}{1em}{}
+%%
+
+%% The amsmath package provides various useful equation environments.
+\usepackage{amsmath}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers.
+%% \usepackage{lineno}
+
+\journal{???}
+
+\begin{document}
+
+\begin{frontmatter}
+
+%% Title, authors and addresses
+
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for theassociated footnote;
+%% use the fnref command within \author or \affiliation for footnotes;
+%% use the fntext command for theassociated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for theassociated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%% \title{Title\tnoteref{label1}}
+%% \tnotetext[label1]{}
+%% \author{Name\corref{cor1}\fnref{label2}}
+%% \ead{email address}
+%% \ead[url]{home page}
+%% \fntext[label2]{}
+%% \cortext[cor1]{}
+%% \affiliation{organization={},
+%%             addressline={},
+%%             city={},
+%%             postcode={},
+%%             state={},
+%%             country={}}
+%% \fntext[label3]{}
+
+% \title{\app{}: AI-Powered Segmentation Tool for Tumor Spheroids}
+\title{\app{}: Deep-learning segmentation and quantitative analysis of tumor spheroids across cell lines}
+
+
+
+\author[first,second]{Michal Průšek}
+\author[second]{Adam Novozámský\corref{cor1}}
+\ead{novozamsky@utia.cas.cz}
+\author[third]{Jan Škubník}
+\author[third]{Vladimíra Svobodová Pavlíčková}
+\author[third]{Silvie Rimpelová\corref{cor2}}
+\ead{silvie.rimpelova@vscht.cz}
+\affiliation[first]{
+    organization={Czech Technical University in Prague, Faculty of Nuclear Sciences and Physical Engineering},
+    addressline={Břehová 7},
+    city={Prague},            
+    postcode={115 19},    
+    country={Czechia}}
+\affiliation[second]{
+    organization={The Czech Academy of Sciences,  Institute of Information Theory and Automation},     addressline={Pod Vodárenskou věží 4},
+    city={Prague},            
+    postcode={182 00},       
+    country={Czechia}}
+\affiliation[third]{
+    organization={University of Chemistry and Technology Prague, Department of Biochemistry and Microbiology},
+    addressline={Technická 5},
+    city={Prague},            
+    postcode={166 28},    
+    country={Czechia}}
+\cortext[cor1]{Corresponding author for the computer science part.}
+\cortext[cor2]{Corresponding author for the biology part.}
+
+%% Abstract
+\begin{abstract}
+Three-dimensional (3D) tumor spheroids are widely used as physiologically relevant in vitro models for studying tumor growth, invasion, and drug response. However, the quantitative analysis of these spheroids remains a significant challenge, as most studies depend on qualitative inspection or labor-intensive manual measurements. In response to this issue, we have introduced the first large-scale, expert-annotated database containing 22,683 bright-field images of spheroids across seven cancer cell lines. This resource provides a high-quality benchmark for reproducible image analysis. In addition, we integrated all other publicly available datasets and created an open-source web application for automated spheroid segmentation and morphological profiling. The platform is designed for easy use by biologists without programming expertise, thereby establishing a unified reference framework for the community. It combines classical image processing techniques with advanced deep learning models to accurately delineate spheroids under various imaging conditions, including those with irregular or degrading morphologies. It also extracts quantitative metrics such as area, circularity, solidity, convexity, and equivalent diameter. By offering a publicly available dataset, pretrained models, and a user-friendly analysis interface, our work establishes a broadly usable framework for accelerating research on spheroid-based cancer studies. We believe that this resource will empower the scientific community to conduct analyses that are faster, more standardized, and reproducible, thereby significantly advancing translational studies in 3D cell culture.
+% Three-dimensional (3D) tumor spheroids are increasingly recognized as physiologically relevant \textit{in vitro} models to study tumor growth, invasion, and drug response. However, quantitative analysis of spheroid morphology remains a challenge, with most published studies relying on qualitative descriptions or basic manual measurements. In this work, we present a deep learning-based algorithm and a user-friendly web-based tool for automated segmentation and morphological analysis of spheroids across multiple cancer cell lines, including prostate, pancreatic, cervical, breast, and lung adenocarcinomas. Our tool accurately extracts morphometric parameters, including area, circularity, solidity, convexity, and equivalent diameter, even in challenging conditions such as disintegrating or irregular spheroids. We trained and validated our model using an expert-annotated dataset of up to 32,367 bright-field images with pixel-precise binary segmentation masks, designed to enhance generalization across diverse experimental setups. The tool is available via a GitHub-hosted platform and supports both local deployment and remote execution on a GPU-based system. We release code, pretrained weights, and two curated datasets (\dsHQ{}, \dsMix{}) with reproducible configs and benchmarking scripts, enabling independent verification and reuse.
+
+
+\end{abstract}
+
+%%Graphical abstract
+% \begin{graphicalabstract}
+%\includegraphics{grabs}
+% \end{graphicalabstract}
+
+%%Research highlights
+% \begin{highlights}
+% \item Research highlight 1
+% \item Research highlight 2
+% \end{highlights}
+
+%% Keywords
+\begin{keyword}
+%% keywords here, in the form: keyword \sep keyword
+tumor spheroids, segmentation, deep learning, morphological characteristics, 3D cell culture, biomedical image processing
+% maximum 6
+%% PACS codes here, in the form: \PACS code \sep code
+
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+
+\end{keyword}
+
+\end{frontmatter}
+
+%% Add \usepackage{lineno} before \begin{document} and uncomment 
+%% following line to enable line numbers
+%% \linenumbers
+
+% 2021SpheroidJ, 2018tasi, 2024SpheroidSegDeDeb, 2025Mali
+
+%% Use \subsubsection, \paragraph, \subparagraph commands to 
+%% start 3rd, 4th and 5th level sections.
+%% Refer following link for more details.
+%% https://en.wikibooks.org/wiki/LaTeX/Document_Structure#Sectioning_commands
+
+\section{Introduction}
+\label{sec:introduction}
+% **********************
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.32\textwidth]{img/spheroid0.png}
+    \includegraphics[width=0.32\textwidth]{img/spheroid1.png}
+    \includegraphics[width=0.32\textwidth]{img/spheroid2.png}
+    \caption{Examples of analyzed spheroid images.}
+    \label{fig:spheroids}
+\end{figure}
+
+Three-dimensional (3D) multicellular spheroids have become increasingly important \textit{in vitro} models in cancer research and drug discovery. Unlike conventional two-dimensional (2D) monolayer cell cultures, which lack spatial complexity and have limited physiological relevance, 3D cell culture models more accurately replicate critical tumor microenvironment characteristics - including nutrient and oxygen gradients, cellular heterogeneity, and the formation of hypoxic cores. These characteristics are critical for accurately modeling tumor behavior, drug penetration, and therapeutic resistance in preclinical settings. Spheroids are widely employed for simulating tumor growth and invasion dynamics, as well as in high-throughput drug screening assays. They are among the most effective models for toxicity assessment, provide a realistic representation of small avascular tumors \textit{in vitro}, and serve as powerful tools for studying \textit{in vivo} tissue behavior \textit{in vitro}.
+
+Quantitative analysis of spheroid properties, such as size, morphology, volume, diameter, surface area, perimeter, and invasive behavior, is crucial for assessing experimental outcomes. However, manual quantification of these parameters is time-consuming and labor-intensive, which presents a significant challenge, especially for large-scale or high-throughput screening experiments. This limitation has increased the demand for automated image analysis methods that can efficiently process large datasets.
+
+In response, a variety of automated tools for spheroid image analysis have been developed, ranging from commercial systems to specialized instruments and open-source solutions built on image analysis frameworks. More recently, based on these foundations, deep learning-based methods have been increasingly utilized for spheroid segmentation and analysis, providing strong capabilities for semantic segmentation and feature extraction.
+
+Despite these advancements, significant challenges remain. Image analysis algorithms must be robust to variations in spheroid morphology, shape, size, texture, and common imaging artifacts such as uneven illumination or shadows. In particular, accurately quantifying invasive behavior remains difficult, as many spheroids lack a well-defined invasive front. Conventional measurements based solely on the invaded area may, therefore, fail to adequately capture relevant phenotypes, especially in cases of irregular or dispersed invasion patterns. Moreover, although deep learning-based methods offer promising solutions, they remain sensitive to domain shift - models trained on one dataset often perform poorly on images from different experimental settings. Furthermore, many existing tools, especially those based on deep learning or custom code, require programming expertise or manual configuration, limiting their accessibility to researchers without technical backgrounds. Therefore, these limitations underscore the need for accessible, robust, and user-friendly software capable of performing accurate spheroid analysis across diverse experimental conditions without requiring expertise in programming or machine learning.
+
+To address these limitations, we present \app{}, a web-based application that employs carefully selected deep learning architectures optimized for deployment on server-grade GPUs to serve multiple concurrent users. The tool is designed to be accessible to a wide range of users: it can be deployed locally on a user's own server or accessed through our hosted version, which runs on modern GPU hardware to ensure reliable performance. In addition to the application itself, we release a large annotated dataset of 22,683 bright-field images of cancer cell spheroids, which were initially pre-annotated using classical image processing methods and then manually corrected and labeled by expert cell and molecular biologists to ensure high quality. This dataset, one of the largest of its kind, was created specifically to enable the training and evaluation of advanced segmentation models. In this article, we describe in detail the dataset preparation workflow, the segmentation methods considered, and the final model architecture implemented in the application.
+
+
+
+\section{Contributions}
+\label{sec:contributions}
+
+The main contributions of this work are:
+
+\begin{itemize}\setlength\itemsep{-0.2em}
+    \item \textbf{Large-scale annotated datasets with cell-line-based splitting:} We present \dsHQ{} (22,683 bright-field images) with semi-automatic expert-corrected annotations and \dsMix{} (32,367 images) combining multiple sources. Both datasets employ strict cell-line-based train/val/test splits, preventing data leakage and ensuring genuine cross-cell-line generalization.
+    
+    \item \textbf{Comprehensive benchmark with unified in-/out-of-distribution evaluation:} Our test set combines 653 BxPC-3 images (within - distribution) with 366 DTS images (pure out-of-distribution, never exposed during training), providing a single benchmark for assessing both domain-specific accuracy and cross-dataset generalization.
+    
+    \item \textbf{Practical deep learning models optimized for server deployment:} We evaluated eight CNN architectures selected for their ability to run efficiently on server-grade GPUs while serving multiple concurrent users. CBAM-ResUNet achieves the highest accuracy (IoU = 0.9344), while HRNet provides real-time processing with IoU = 0.9196, enabling both high-precision analysis and high-throughput screening applications. More advanced architectures may be integrated in future updates as computational resources permit.
+    
+    \item \textbf{Rigorous statistical validation and multi-criteria optimization:} We employ comprehensive statistical testing (Friedman test, Wilcoxon signed-rank, Mann-Whitney U, Cliff's $\delta$) across 16 model configurations, with TOPSIS analysis for optimal speed-accuracy trade-offs, revealing that pretrained models consistently outperform fine-tuned variants.
+    
+    \item \textbf{Open-source deployment and full reproducibility:} We provide a production-ready web application (Docker-containerized, GPU-accelerated) with REST API, pretrained weights for all models, standardized preprocessing pipeline (2nd-98th percentile normalization), and complete training configurations enabling full reproducibility of results.  The application can be run on our server or downloaded and deployed locally.
+\end{itemize}
+
+\section{Related Work}
+\label{sec:related}
+
+Tumor spheroids are increasingly recognized as physiologically relevant \textit{in vitro} models for cancer research and drug development, creating a growing demand for robust and efficient methods for quantitative image analysis \cite{2012vinci,2013PCaAnalyser,2014AMIDA,2024Dominguez,2025Mali}. While key parameters such as spheroid size, morphology, and invasion behavior can be assessed manually, this approach is time-consuming, labor-intensive, and unsuitable for \textit{high-throughput screening} (HTS) applications \cite{2012vinci,2022Insidia2,2025Mali}. As a result, these limitations have driven the development of automated image analysis tools.
+
+Early approaches to spheroid image analysis often relied on classical image processing techniques implemented within general-purpose software platforms such as ImageJ/FIJI~\cite{2013PCaAnalyser,2014AMIDA,2014SpheroidSizer,2014ivanov,2018tasi,2021spheroidpicker,2022SpheroidAnalyseR}. A variety of macros and plugins were developed for these platforms to automate basic measurements, including spheroid size, shape, and diameter~\cite{2018tasi,2021spheroidpicker,2022SpheroidAnalyseR}. Over time, several specialized software tools were developed, some built upon or designed to interact with ImageJ/FIJI. Examples include PCaAnalyser, a Java-based tool developed to analyze spheroids of prostate cancer cells~\cite{2013PCaAnalyser}; AnaSP, a MATLAB-based suite for morphological analysis~\cite{2015AnaSP}; and INSIDIA, a FIJI macro focused on invasion analysis, which was later updated in INSIDIA 2.0~\cite{2017Insidia,2022Insidia2}. Other tools, such as SpheroidSizer, offer user-friendly interfaces to estimate the spheroid size~\cite{2014SpheroidSizer}, and TASI, which enables spatiotemporal quantification of spheroid behavior~\cite{2018tasi}. Standalone applications such as AMIDA have also been introduced to support large-scale 3D culture screening experiments~\cite{2014AMIDA}. These tools typically provide quantitative metrics such as area, diameter, perimeter, and volume, and some extend their functionality to include the evaluation of invasive behavior. In parallel, commercial systems such as Opera~\cite{2013PCaAnalyser} and specialized imaging cytometers such as Celigo~\cite{2012vinci} have incorporated automated analysis capabilities, often as components of integrated HTS platforms.
+
+However, methods relying solely on classical image processing or fixed parameter settings often encounter substantial limitations. These approaches are typically sensitive to variations in spheroid morphology, size, texture, and image quality and may struggle with common issues such as uneven illumination or the presence of debris~\cite{2014AMIDA}. Quantifying complex cellular behaviors, especially invasion, presents additional challenges, especially when cell types do not form a well-defined invasive front, necessitating more advanced metrics than simple area-based measurements~\cite{2016Castillo}. Moreover, achieving consistent performance across different cell lines and experimental setups often requires extensive manual parameter tuning, limiting both the scalability and robustness of such techniques~\cite{2014AMIDA}.
+
+More recently, deep learning techniques have gained significant traction in biomedical image analysis due to their ability to automatically learn complex patterns and features, offering notable improvements in segmentation accuracy and robustness~\cite{2025Mali,2023deepsw,2021SpheroidJ,2023spheroscan}. An early pioneering work in this direction was by Sadanandan et al.~\cite{2017sadanandan}, who demonstrated the potential of deep adversarial networks for spheroid segmentation, establishing a foundation for subsequent developments. Architectures such as U-Net~\cite{unet} and Fully Convolutional Networks (FCNs)~\cite{Long2015} have been widely adopted for semantic segmentation tasks, while models like Mask R-CNN~\cite{He2017} are increasingly used for instance segmentation~\cite{2021spheroidpicker,2021SpheroidJ,2023spheroscan}. Several deep learning-based tools have been developed specifically for spheroid analysis, including SpheroidJ~\cite{2021SpheroidJ} and SpheroScan~\cite{2023spheroscan}, which use neural networks for accurate segmentation of 3D spheroids. The SMART system \cite{2021smart} further advances this trend by incorporating a refined convolutional neural network (CNN) for automated spheroid detection and analysis while also introducing novel quantitative metrics such as the Excess Perimeter Index (EPI) and Multiscale Entropy Index (MSEI) to characterize invasive behavior better. Beyond analytical applications, artificial intelligence has also been employed for physical manipulation tasks. For example, SpheroidPicker utilizes deep learning to facilitate morphology-based selection and automated transfer of spheroids, streamlining experimental workflows \cite{2021spheroidpicker}.
+
+Despite the advances brought about by deep learning, several challenges remain. One of the most prominent issues is the domain shift problem~\cite{2024SpheroidSegDeDeb,2024Dominguez}, where models trained on data from a specific source, such as variations in microscopy setup, staining, or cell type, often perform poorly when applied to images from different experimental settings. To address this, recent studies have explored the use of style transfer techniques, which aim to transform images from a new domain to match the visual characteristics of the training data~\cite{2024Dominguez}. Furthermore, while deep learning models can achieve highly accurate segmentation, extracting meaningful biological insights still requires robust post-processing, including comprehensive parameter extraction and interpretation~\cite{2022Insidia2}.
+
+In summary, automated analysis of spheroid images has progressed significantly, evolving from classical image processing methods to sophisticated deep learning-based approaches. A wide array of tools is now available, offering diverse functionalities for measuring spheroid size, shape, and structure. However, critical challenges persist, particularly in ensuring robustness under varying experimental conditions, accurately quantifying complex phenotypes such as invasion, and designing user-friendly interfaces that make these tools accessible to researchers without specialized technical backgrounds. These areas continue to offer important opportunities for innovation and development in the field.
+
+\section{Materials and methods}
+\label{sec:materials}
+\subsection{Cell maintenance and passaging}
+\label{subsec:cell_maintance}
+In this study, the following human cell lines  were used: cells from non-small cell lung adenocarcinoma (A549; ATCC, USA), triple-negative breast carcinoma (UFH-001, Merck, USA), pancreatic adenocarcinoma (BxPC-3 and MIA PaCa-2; ATTC, USA), cervical carcinoma (HeLa, ATCC, USA), prostatic and breast carcinoma (PC-3 and MCF-7, respectively; ATCC, USA). Cell lines were kept in the following cultivation mediums: A549, UFH-001, PC-3, MCF-7, MIA PaCa-2, and HeLa in high-glucose Dulbecco's modified Eagle medium (DMEM) supplemented with 10\% fetal bovine serum (FBS; Merck, USA) and 2 mM L-glutamine (Merck, USA), and BxPC-3 in RPMI-1640 medium + 10\% FBS + 2 mM L-glutamine. Cells were kept in standard cultivation conditions at 37 °C, 5\% CO\textsubscript{2} in the atmosphere and 95\% humidity. The cells were regularly passaged (2-3 times per week) and kept in the exponential growth phase. Cell passaging was carried out as follows: cells that grow in a monolayer (two-dimensional culture) in a 10 cm diameter cell culture plate were rinsed with 4 ml of sterile phosphate-buffered saline (PBS, pH 7.4), detached with 1 ml of 0. 25\% trypsin with 0. 02\% ethylenediaminetetraacetic acid in Hanks balanced salt solution for 2-10 min. (cell-line dependent) and seeded in new cell culture plates containing fresh cell culture media.
+
+\subsection{Preparation  of cancer cell spheroids and microscopy}
+\label{subsec:preparation_of_cell}
+Cancer cell spheroids, three-dimensional cell culture models, were prepared from a cell suspension obtained during the passaging of cells previously grown in a monolayer culture. Cell spheroids were formed using Nunclon\textsuperscript{TM} Sphera\textsuperscript{TM} 96-well clear, round U-bottom plates with an ultra-low-attachment surface (Thermo Fisher Scientific, USA), similarly as reported in reference \cite{2024zumaya}. Briefly, specific numbers of cells were seeded into each well in 100 µL of appropriate cell culture media: 2,000 A549, 3,000 UFH-001, 300 MIA PaCa-2, 4,000 BxPC-3, 1,500 PC-3, 3,000 MCF-7, and 500 HeLa cells. The numbers of seeded cells were optimized prior to the production of cancer cell spheroids with a diameter of approximately 400 µm after 96 h of incubation – considered optimal for potential subsequent drug testing assays \cite{2009friedrich}.  Plates were incubated under standard conditions to enable spheroid formation, with one spheroid forming per well that would be suitable for individual image analysis or treatment. While one spheroid initially forms per well, extended cultivation occasionally leads to partial disintegration into multiple fragments, which explains why some images contain more than one segmented object.
+
+
+Cancer cell spheroids were initially imaged after 4 days of incubation and subsequently every 2-3 days for up to 17 days using live-cell bright-field microscopy. Imaging was performed using inverted Olympus IX-81 and Olympus IX-83 microscopes (Olympus, Japan) operated with xCellence and cellSens software, respectively. The systems were equipped with an EM-CCD camera C9100-02 (Hamamatsu, Germany) or Orca Flash 4.0 (Hamamatsu, Germany). Two dry objectives were used for the imaging: a 4× objective with a numerical aperture of 0.1 and a 10× objective with a numerical aperture of 0.3 (both Olympus, Japan), providing total magnifications of 40 and 100×, respectively. Images of individual spheroids (one per well) were saved in TIFF format for further analysis.
+
+
+\section{Image segmentation using classical image processing}
+\label{sec:segClassic}
+The initial phase of this research focused on developing robust spheroid segmentation using classical image processing techniques. These methods were used to generate a preliminary segmentation of spheroids, which served as a basis for expert refinement. Using the characteristic intensity differences between the spheroids and the typically non-uniform background, the pipeline was configured to produce sufficiently accurate contours. The approach enabled experts to focus on refining boundary inaccuracies instead of performing manual annotations from scratch. This substantially accelerated the annotation workflow and reduced the manual effort required. Consequently, it facilitated the creation of a large and high-quality annotated dataset of spheroid images, which served as a foundation for training more advanced deep learning models. Without this automated pre-annotation step, it would not be feasible to prepare a dataset of this scale, as manual annotation alone could take up to 15 minutes per image in the case of complex spheroid morphologies.
+
+After evaluating various regional segmentation methods on $1000 \times 1000$ pixel grayscale images with respect to performance and computational cost, three adaptive thresholding techniques were selected for further development: Gaussian adaptive thresholding, Sauvola method \cite{2000sauvola}, and Niblack method \cite{1985niblack}. Global thresholding methods such as Otsu's method~\cite{Otsu1979} proved inadequate due to uneven illumination across the field of view. More sophisticated approaches including watershed segmentation~\cite{Vincent1991}, Mean shift segmentation~\cite{Comaniciu2002},were evaluated but rejected due to either computational complexity or poor performance on heterogeneous spheroid boundaries. These adaptive thresholding methods compute a local threshold for each pixel based on the statistical properties of its neighborhood. Gaussian adaptive thresholding uses a Gaussian-weighted mean, while Sauvola's and Niblack's methods rely on the local mean and standard deviation, differing in their specific formulations and sensitivity parameters. The binary masks generated by the adaptive thresholding methods were further refined to enhance segmentation accuracy. First, a morphological opening was applied to remove noise and smooth boundary irregularities, and then the Suzuki algorithm \cite{1985suzuki} was used to extract the contours. A crucial step in the refinement process involved applying the Canny edge detector \cite{1986canny} on the original grayscale image. Only the contours that intersected with the Canny edges were retained, which helped to eliminate noise and artifacts that did not correspond to the actual boundaries of the spheroids. Some adaptive thresholding methods - most notably Niblack and Gaussian adaptive thresholding - do not actively suppress high-frequency noise present in the input image; consequently, isolated noisy pixels can persist in the resulting binary masks. To mitigate this residual noise, a morphological erosion with an elliptical structural element of size \(3 \times 3\) is applied before finding contours. This operation removes spurious foreground pixels that do not correspond to genuine spheroid borders and accelerates the subsequent processing pipeline.
+
+The binary masks obtained from the thresholding stage are then refined. To better capture the often ambiguous edges of the spheroids, a morphological dilation is applied; the size of its structural element is tuned for optimal performance. Only objects (contours) whose area exceeds a certain minimum threshold are retained. This threshold is selected to eliminate small fragments that may appear near the spheroid but do not belong to it, thereby preventing their misidentification as parts of the spheroid. The tool also identifies and removes images that are damaged or irrelevant. Examples of such cases include images where scratches or fibers significantly intrude into the spheroid region—often reaching the image borders—as well as instances where the spheroid is only partially captured and touches the frame edge. An image is considered irrelevant and discarded if no valid object remains after filtering; for instance, if all detected objects are either too small or intersect the image border. The segmentation of holes inside the spheroids proceeds as follows. First, the binary spheroid mask produced by the segmentation method is dilated. Then, all inner contours of this dilated mask are extracted. From these contours, a mask is constructed and subjected to morphological erosion with a \(3 \times 3\) structuring element. The eroded inner contour mask is subtracted from the main spheroid mask, resulting in the final spheroid mask that contains internal holes.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/SpheroSeg-classical.pdf} 
+    \caption{The classical segmentation pipeline combines adaptive thresholding, Canny edge detection with Suzuki contour extraction, and morphological transformations. A hybrid optimization scheme—combining gradient-based search (Adam optimizer on a numerically estimated IoU objective) and discrete hill climbing—was applied to a small set of manually reviewed samples (1–5 per case) to refine parameters such as thresholds and filter criteria (e.g., minimum area, internal hole removal).}
+    \label{fig:classical_schema}
+\end{figure}
+
+Optimal parameter settings for segmentation methods differ greatly across projects and cell lines, meaning no single configuration consistently provides reliable results for all datasets. To optimize segmentation performance across different cell lines (e.g., PC-3, BxPC-3, A549, and MIA PaCa-2) and imaging conditions, we employed a hybrid optimization strategy that combines gradient-based and discrete search techniques. The objective was to maximize the mean Intersection over Union (IoU) score between automatically generated segmentation masks and a small set of expert-annotated ground truth masks (GT). Specifically, continuous parameters (such as the adaptive thresholding window size or the weighting constants in the Niblack method) were optimized using the Adam optimizer \cite{2014adam}, which follows the gradient of the IoU score estimated by numerical approximation. Discrete parameters, such as the size of morphological structuring elements or area thresholds, were tuned using a hill-climbing strategy that evaluates neighboring candidate values and selects the one that improves the overall score. The overall optimization problem was defined as:
+
+\begin{equation}
+\underset{\boldsymbol{\theta}}{\text{maximize}} \quad \frac{1}{N} \sum_{i=1}^{N} \text{IoU}(M_i^{\text{pred}}(\boldsymbol{\theta}), M_i^{\text{GT}})
+\end{equation}
+
+where $N$ is the number of validation images, $M_i^{\text{pred}}(\boldsymbol{\theta})$ is the predicted segmentation mask for the $i$-th image, and $M_i^{\text{GT}}$ is the corresponding ground truth mask. $\boldsymbol{\theta}$ denotes the set of tunable parameters, including the window size used in adaptive thresholding, the parameter in the Niblack method, the Gaussian blur standard deviation in the Canny edge detector, the standard deviation multiplier for hysteresis thresholding in edge detection, the dilation kernel size used in morphological postprocessing, and the minimum spheroid area threshold used to filter out small objects.
+The $\text{IoU}$ score is computed as:
+
+\begin{equation}
+\text{IoU}(A, B) = \frac{|A \cap B|}{|A \cup B|}
+\end{equation}
+%
+where $A$ and $B$ denote GT and the result of our method, respectively.
+
+The parameter vector $\boldsymbol{\theta}$ thus comprised several components affecting different stages of the segmentation pipeline within post-processing steps. The entire process, along with the parameter optimization framework, was implemented in \textit{prusek-spheroid}, a Python-based software tool with a graphical user interface~\cite{prusek2024spheroid}, available on PyPI\footnote{\url{https://pypi.org/project/prusek-spheroid/}} and GitHub\footnote{\url{https://github.com/michalprusek/prusek-spheroid/}}. This tool was developed and used by the authors to perform batch processing of spheroid images and to generate the large-scale annotated dataset used for training deep learning models.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/SpheroSeg-annotation.pdf} 
+    \caption{Annotation process for accurate object boundary correction.}
+    \label{fig:annotation}
+\end{figure}
+
+\section{Dataset Preparation for Deep Learning}
+\label{sec:dataset}
+
+\subsection{Dataset Composition}
+
+We employ a two-stage training strategy utilizing two dataset configurations with binary semantic segmentation ground truth annotations (spheroid foreground vs. background). All ground truth masks are binary, where pixels belonging to spheroids are labeled as foreground (value 255) and all other pixels, including culture medium, debris, and artifacts, are labeled as background (value 0). This semantic segmentation approach enables precise delineation of spheroid boundaries for morphological analysis and downstream quantification. Our combined dataset collection (32,367 images when including external datasets) represents one of the largest aggregations of bright-field spheroid images with binary segmentation masks.
+
+\textbf{\dsHQ{}} (22,683 images): High-quality dataset with semi-automatic annotations from seven cell lines (A549, BxPC-3, HeLa, MCF-7, MIA PaCa-2, PC-3, UFH-001). Our approach combines algorithmic segmentation using \textit{prusek-spheroid} tool~\cite{prusek2024spheroid} (available on PyPI\footnote{\url{https://pypi.org/project/prusek-spheroid/}} and GitHub\footnote{\url{https://github.com/michalprusek/prusek-spheroid/}}) with expert refinement in CVAT~\cite{cvat}. This semi-automatic pipeline ensures consistent and accurate segmentation across the entire dataset. Artifacts such as microscope scratches and biological fibers were carefully removed during expert review, see the procedure in Figure \ref{fig:annotation}.
+
+\textbf{\dsMix{}} (32,367 images): Extended version of \dsHQ{} augmenting the training split with external manually annotated datasets:
+\begin{itemize}\setlength\itemsep{-0.2em}
+    \item All 22,683 \dsHQ{} images with semi-automatic annotations (maintaining original splits)
+    \item \textit{SLiMIA}~\cite{slimia2025}: 7,862 unique images extracted and added to training
+    \item \textit{\dsDTS{}}: 1,069 training images from the Deep-Tumour-Spheroid (\dsDTS{}) dataset~\cite{2024SpheroidSegDeDeb} added to training (\dsDTS{} maintains strict train/test separation)
+    \item \textit{SpheroidJ}: 387 images from the SpheroidJ dataset~\cite{2021SpheroidJ} added to training
+    \item Note: The \dsDTS{} test split of 366 images is reserved exclusively for out-of-distribution evaluation and was never exposed during training
+\end{itemize}
+
+\begin{figure}[!t]
+    \centering
+    \begin{tabular}{ccc}
+        \includegraphics[width=0.32\textwidth]{dataset_images/spheroseg_bxpc3_vis.png} &
+        \includegraphics[width=0.32\textwidth]{dataset_images/spheroseg_a549_vis.png} &
+        \includegraphics[width=0.32\textwidth]{dataset_images/spheroseg_mcf7_vis.png} \\
+        (a) \dsHQ{} BxPC-3 & (b) \dsHQ{} A549 & (c) \dsHQ{} MCF-7 \\[3mm]
+        \includegraphics[width=0.32\textwidth]{dataset_images/slimia_a549_vis.png} &
+        \includegraphics[width=0.32\textwidth]{dataset_images/dts_vis.png} &
+        \includegraphics[width=0.32\textwidth]{dataset_images/spheroidj_BL5S_vis.png} \\
+        (d) SLiMIA A549 & (e) \dsDTS{} & (f) SpheroidJ BL5S \\
+    \end{tabular}
+    \caption{Representative samples from the combined dataset collection showing spheroid images with segmentation mask overlays. Red contours indicate external boundaries, while blue contours show internal cavities or holes. Top row (a-c): \dsHQ{} dataset samples from three different cell lines (BxPC-3, A549, MCF-7) with semi-automatic expert-corrected annotations. Bottom row: External datasets incorporated into \dsMix{} - (d) SLiMIA dataset with manual annotations from Axiovert200M microscope, (e) \dsDTS{} dataset, and (f) SpheroidJ dataset. The visualization demonstrates the diversity in imaging conditions, spheroid morphologies, and annotation quality across the different data sources.}
+    \label{fig:dataset_samples}
+\end{figure}
+
+\textbf{Critical annotation differences}: External datasets employ divergent annotation philosophies compared to \dsHQ{}. While our annotations comprehensively delineate the entire spheroid structure, including degrading periphery, external datasets (particularly \dsDTS{}) adopt a conservative approach, annotating only the dense spheroid core while excluding peripheral degrading regions, loosely attached cells, and diffuse boundaries. This fundamental difference in what constitutes the \textit{region of interest} impacts cross-dataset evaluation metrics, as models trained on inclusive annotations are penalized when evaluated against conservative ground truth, despite correctly identifying visible spheroid structures. We are fully aware of this inconsistency across datasets; nevertheless, we deliberately preserved such cases in the test set to demonstrate the generality and robustness of the evaluated tools across diverse cell lines and annotation philosophies.
+
+\subsection{Cell-Line Based Data Splitting}
+
+\textbf{Critical design choice}: We implement strict cell-line-based splitting where each cell line appears exclusively in one split (\textit{training}, \textit{validation}, or \textit{test}). Cell lines were assigned to splits randomly rather than based on visual similarity or morphological characteristics. This prevents data leakage and ensures genuine cross-cell-line generalization, as models must learn features transferable across different cellular phenotypes rather than memorizing cell-line-specific characteristics.
+
+\begin{table}[h]
+\centering
+\caption{Dataset distribution across splits}
+\label{tab:dataset_distribution}
+\begin{tabular}{lccc}
+\hline
+\textbf{Split} & \textbf{\dsMix{}} & \textbf{\dsHQ{}} \\
+\hline
+Training & 28,809\textsuperscript{b} & 19,491 \\
+Validation & 2,539 & 2,539 \\
+Test & 1,019\textsuperscript{a} & 653 \\
+\hline
+\textbf{Total} & 32,367 & 22,683 \\
+\hline
+\end{tabular}
+\begin{flushleft}
+\footnotesize{\textsuperscript{a}Includes 653 BxPC-3 images from \dsHQ{} plus 366 images from external \dsDTS{} test set.\\
+\textsuperscript{b}Contains 877 duplicate image pairs (3.04\% of total), primarily within individual experiments and between DTS/SpheroidJ datasets. These duplicates were identified through MD5 hash analysis but retained to preserve the original dataset structure. Removing duplicates would yield 27,932 unique training images.}
+\end{flushleft}
+\end{table}
+
+\begin{table}[!b]
+\centering
+\caption{Cell line allocation across splits with strict separation}
+\label{tab:cell_line_splits}
+\begin{tabular}{ll}
+\hline
+\textbf{Split} & \textbf{Cell Lines} \\
+\hline
+\multicolumn{2}{l}{\textbf{Training}} \\
+\textit{\dsHQ{} core:} & MCF-7 (7,642), UFH-001 (6,321), \\
+         & PC-3 (3,292), MIA PaCa-2 (2,236) \\
+\textit{\dsMix{} additional:} & 51 cell lines from SLiMIA, \\
+         & 7 cell lines from SpheroidJ, \\
+         & DTS cell lines \\
+\hline
+Validation & A549 (1,689), HeLa (850) \\
+\hline
+Test & BxPC-3 (653) \\
+     & \dsDTS{} external dataset (366, pure OOD) \\
+\hline
+\end{tabular}
+\end{table}
+
+\dsMix{} augments the training split with 9,318 additional images from external sources (SLiMIA: 7,862; \dsDTS{} training: 1,069; SpheroidJ: 387), providing diverse imaging conditions and cell types beyond the core seven \app{} lines. Importantly, only the \dsDTS{} training split was used for model training—the \dsDTS{} test split was strictly reserved for evaluation. The validation splits remain identical between datasets. For testing, \dsHQ{} uses only BxPC-3 spheroids (653 images) for within-distribution evaluation, while \dsMix{} additionally includes the \dsDTS{} test set (366 images) as pure out-of-distribution (OOD) evaluation, resulting in 1,019 test images that assess both within-dataset and cross-dataset generalization.
+
+\subsection{Dataset Standardization and Format}
+
+All images and masks were standardized to an 8-bit PNG format with a resolution of $1024 \times 1024$ pixels to ensure consistency across diverse data sources. Original images spanning various formats (BMP, TIFF, JPEG) and bit depths (8-bit and 16-bit) were converted using adaptive normalization—16-bit microscopy images underwent percentile-based scaling (2nd-98th percentile) to preserve contrast while preventing saturation. Binary segmentation masks maintain two values: 0 (background) and 255 (spheroid), stored as single-channel PNG files. This standardization eliminates format-related inconsistencies and ensures compatibility with modern deep learning frameworks. The final dataset organization follows the standard structure with separate \texttt{images/} and \texttt{masks/} directories for each split, where corresponding image-mask pairs share identical filenames for straightforward data loading.
+
+\begin{table}[t]
+\centering
+\caption{Spheroid diameter statistics in pixels (per-mask analysis).\textsuperscript{a}}
+\label{tab:spheroid_measurements}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{l
+                S[table-format=5.0]
+                S[table-format=4.0]
+                S[table-format=3.0]
+                S[table-format=3.0]
+                S[table-format=3.0]
+                S[table-format=4.0]}
+\toprule
+\textbf{Dataset} & \textbf{Spheroids analyzed} & \textbf{Min} & \textbf{Q1} & \textbf{Median} & \textbf{Q3} & \textbf{Max} \\
+\midrule
+\dsHQ{}  & 36135 & 6 & 12 & 255 & 446 & 1056 \\
+\dsMix{} & 47467 & 4 & 19 & 268 & 449 & 1056 \\
+\bottomrule
+\multicolumn{7}{l}{\footnotesize{\textsuperscript{a} The number of analyzed spheroids exceeds the number of images due to spheroid fragmentation}}\\
+\multicolumn{7}{l}{\footnotesize{during extended cultivation, where some spheroids disintegrate into multiple objects.}}
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsection{Image Characteristics and Dataset Properties}
+
+We analyzed both datasets to characterize their properties. Table~\ref{tab:spheroid_measurements} presents statistics on spheroid diameter. The original \dsHQ{} dataset demonstrated remarkable uniformity in acquisition protocols, whereas the \dsMix{} dataset exhibited substantial heterogeneity, with 13 unique resolutions arising from the integration of external datasets that had varying acquisition parameters. Intensity analysis shows that both datasets have well-balanced contrast, with normalized mean intensities of 0.686 for \dsHQ{} and 0.642 for \dsMix{}. These values indicate that appropriate exposure settings were used during acquisition. Additionally, the higher standard deviation in \dsMix{} (0.163 compared to 0.148) reflects the diverse imaging conditions present across the multiple sources.
+
+\section{Image segmentation using deep learning}
+\label{sec:segDeep}
+
+\subsection{Network Architectures}
+\label{subsec:architectures}
+
+We evaluated eight deep learning architectures selected for their practical deployment characteristics on server-grade hardware while maintaining the ability to serve multiple concurrent users. These architectures represent diverse approaches to semantic segmentation, from classical U-Net to attention-enhanced models, all chosen to balance accuracy with computational efficiency for real-world deployment. All architectures process $1024 \times 1024$ pixel images and produce binary segmentation masks at the same resolution. Future releases may integrate more computationally intensive architectures, such as Vision Transformers~\cite{Dosovitskiy2020} and related large-scale models including specialized segmentation transformers~\cite{Zheng2021,Xie2021}, as server resources expand.
+
+\subsubsection{CBAM-ResUNet: ResUNet with CBAM Attention}
+Our best-performing architecture, CBAM-ResUNet, integrates Convolutional Block Attention Module~\cite{woo2018cbam} into a ResUNet backbone. The network uses feature channels of [64, 128, 256, 512] with a 1024-channel bottleneck. CBAM applies sequential channel and spatial attention, where channel attention uses both average and max pooling to capture feature statistics, while spatial attention employs a 7×7 convolution for spatial importance maps. This architecture achieved the highest overall IoU of 0.9344 on the combined test set.
+
+\begin{figure}
+ \centering
+    \begin{subfigure}[b]{0.68\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{schemes/CBAM.pdf}
+        \caption{LC-ResUNet overall architecture}
+        \label{fig:ma_resunet_arch}
+    \end{subfigure}
+     
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{schemes/mCBAM.pdf}
+        \caption{Residual mCBAM}
+        \label{fig:ma_resunet_arb}
+    \end{subfigure}
+    \hfill   
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{schemes/mAG.pdf}
+        \caption{mAG}
+        \label{fig:ma_resunet_lsa}
+    \end{subfigure}
+    \caption{LC-ResUNet architecture. (a) Encoder–decoder structure with skip connections and attention gates, downsampling from 1024×1024 to 32×32 while expanding channels (48–1024). (b) Enhanced Residual Block with simplified CBAM (SEBlock using global average pooling) and 7×7 spatial attention. (c) Modified Attention Gate (mAG) in skip connections, combining encoder–decoder features via a learnable gating mechanism to highlight relevant regions.}
+    \label{fig:lc_resunet_architecture}
+\end{figure}
+
+\subsubsection{Multi-Attention ResUNet (MA-ResUNet)}
+Multi-Attention ResUNet (MA-ResUNet) extends the ResUNet framework~\cite{diakogiannis2020resunet} with three complementary attention mechanisms. Using feature channels [32, 64, 128, 256] and a 512-channel bottleneck, it integrates: (1) SimAM~\cite{yang2021simam}, a parameter-free attention module computing neuron importance via energy functions; (2) TripletAttention~\cite{misra2021rotate} for cross-dimensional feature interactions; and (3) LightweightSelfAttention with 8 heads in the bottleneck. We also evaluated a memory-efficient variant, MA-ResUNet-Mini, using reduced channels [20, 40, 80, 160].
+
+
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}[b]{0.68\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{schemes/MA-ResUNet.pdf}
+        \caption{MA-ResUNet overall architecture}
+        \label{fig:ma_resunet_arch}
+    \end{subfigure}    
+    \begin{subfigure}[b]{0.30\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{schemes/ARB.pdf}
+        \caption{ARB-MSA Block}
+        \label{fig:ma_resunet_arb}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.63\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{schemes/LSA.pdf}
+        \caption{LSA Block}
+        \label{fig:ma_resunet_lsa}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.35\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{schemes/AAG.pdf}
+        \caption{Advanced Attention Gate Block (AAG)}
+        \label{fig:ma_resunet_aag}
+    \end{subfigure}
+    \hfill
+    \caption{MA-ResUNet architecture. (a) Encoder–decoder with attention gates (AG) at skip connections, downsampling from 1024×1024 to 64×64 while expanding channels (32–512). The bottleneck includes an Advanced Residual Block (ARB) with Lightweight Self-Attention (LSA). (b) ARB with multi-stage attention: SimAM for parameter-free 3D attention, followed by TripletAttention (C–H, C–W, H–W). (c) LSA module in the bottleneck using depthwise separable convolutions and 8-head multi-head attention for efficient global context capture. (d) Advanced Attention Gate (AAG) combining gating signal from decoder with skip connection features through learnable transformations (W\_g, W\_x), generating spatial attention maps via sigmoid activation, and refining output with TripletAttention for enhanced cross-dimensional feature interactions.}
+    \label{fig:ma_resunet_architecture}
+\end{figure}
+
+
+\subsubsection{Lightweight CBAM-ResUNet (LC-ResUNet)}
+LC-ResUNet implements a lightweight variant of CBAM attention optimized for robust generalization. With channels [48, 96, 192, 384, 512], it employs simplified channel attention (SEBlock) using only global average pooling rather than both average and max pooling, reducing computational overhead while maintaining effectiveness. Combined with standard 7×7 spatial attention and enhanced attention gates in skip connections, this architecture achieved IoU of 0.8901 on the external \dsDTS{} dataset, demonstrating solid generalization capabilities despite a 4.16\% performance drop from within-distribution data.
+
+
+
+\subsubsection{Standard U-Net}
+We implemented the classical U-Net architecture~\cite{unet} with five levels using channels [64, 128, 256, 512, 1024]. Each level consists of double convolution blocks with instance normalization and ReLU activation. The architecture includes optional deep supervision for improved gradient flow. Despite its simplicity, U-Net achieved the second-highest overall performance (IoU = 0.9287) when pretrained on diverse data.
+
+\subsubsection{HRNet: High-Resolution Network}
+HRNet~\cite{sun2019deep} maintains high-resolution representations throughout processing via parallel multi-resolution streams. Starting with a single stream, it progressively adds parallel branches at 1/2×, 1/4×, and 1/8× resolutions with channels [48, 96, 192, 384]. Cross-resolution exchange units enable information fusion between streams. HRNet achieved the fastest inference among all models tested.
+
+\subsubsection{PSPNet: Pyramid Scene Parsing Network}
+PSPNet~\cite{zhao2017pyramid} employs a ResNet-101 backbone with dilated convolutions (output stride 8), followed by pyramid pooling at scales [1×1, 2×2, 3×3, 6×6]. We replaced batch normalization with group normalization for stability. During training, the network produces dual outputs: main segmentation and auxiliary supervision (weighted 0.4) from intermediate layers.
+
+\subsubsection{LightM-UNet: Lightweight Mamba-UNet}
+LightM-UNet combines U-Net structure with simplified Mamba blocks (state space models) for efficient long-range dependency modeling. Using depthwise separable convolutions and base channels of 32, it achieves competitive performance with reduced computational cost. Notably, this was the only architecture that benefited from fine-tuning, showing 0.95\% improvement.
+
+\subsection{Training Strategy}
+\label{subsec:training}
+
+We developed a two-stage training strategy that leverages both data diversity and annotation quality, challenging the conventional approach of training exclusively on high-quality data.
+
+\subsubsection{Stage 1: Pretraining on Diverse Data}
+Models were initially trained on \dsMix{} (32,367 images), our comprehensive dataset combining multiple sources with varying annotation quality. This dataset includes spheroids from over 60 cell lines acquired under diverse experimental conditions, providing extensive morphological and imaging variability. Pretraining continued for 20-150 epochs (model-specific) using the AdamW optimizer~\cite{loshchilov2019decoupled} with an initial learning rate of $2 \times 10^{-4}$, selected via automated learning rate range testing~\cite{smith2017cyclical}.
+
+\subsubsection{Stage 2: Finetuning on High-Quality Annotations}
+Subsequently, models were fine-tuned on \dsHQ{} (22,683 images), containing expert-corrected annotations with consistent quality. Fine-tuning employed a reduced learning rate of $1 \times 10^{-5}$ for 50-100 epochs, with model-specific encoder freezing (4-15 epochs as detailed in Table~\ref{tab:training_params}) to preserve learned feature representations. This stage aimed to refine decision boundaries using precise annotations while maintaining the generalization capability acquired during pretraining.
+
+\subsection{Loss Function Design}
+\label{subsec:loss}
+
+We employed a multi-component loss function combining three complementary objectives:
+
+\begin{equation}
+\mathcal{L}_{\text{total}} = \alpha_1 \mathcal{L}_{\text{focal}} + \alpha_2 \mathcal{L}_{\text{dice}} + \alpha_3 \mathcal{L}_{\text{IoU}}
+\end{equation}
+
+where $\alpha_1 = 1.0$, $\alpha_2 = 1.0$, and $\alpha_3 = 0.5$ are empirically determined weights balancing the contributions of each component. The focal loss~\cite{lin2017focal} addresses the severe class imbalance inherent in spheroid images, where background pixels typically constitute 80-90\% of the image:
+
+\begin{equation}
+\mathcal{L}_{\text{focal}} = -\alpha(1-p_t)^\gamma \log(p_t)
+\end{equation}
+
+with $\alpha = 0.8$ and $\gamma = 2$, where $p_t$ represents the model's estimated probability for the ground-truth class. The modulating factor $(1-p_t)^\gamma$ reduces the loss contribution from well-classified examples, focusing training on hard negatives. The Dice loss directly optimizes the F1 score, providing smooth gradients even for small objects:
+
+\begin{equation}
+\mathcal{L}_{\text{dice}} = 1 - \frac{2\sum_{i} p_i g_i + \epsilon}{\sum_{i} p_i + \sum_{i} g_i + \epsilon}
+\end{equation}
+
+where $p_i$ and $g_i$ denote predicted and ground-truth values for pixel $i$, with $\epsilon = 10^{-6}$ for numerical stability. The IoU loss directly optimizes the primary evaluation metric:
+
+\begin{equation}
+\mathcal{L}_{\text{IoU}} = 1 - \frac{\sum_{i} p_i g_i + \epsilon}{\sum_{i} p_i + \sum_{i} g_i - \sum_{i} p_i g_i + \epsilon}
+\end{equation}
+
+This combination ensures robust training by addressing class imbalance (focal), optimizing overlap metrics (Dice and IoU), and providing stable gradients throughout training.
+
+\subsection{Implementation Details}
+\label{subsec:implementation}
+
+\subsubsection{Data Augmentation}
+We applied extensive augmentation using the Albumentations library~\cite{buslaev2020albumentations} to improve model robustness. The pipeline included geometric transformations (rotation ±45°, horizontal/vertical flips with $p=0.5$, elastic transform with $\alpha=120$ and $\sigma=6$), photometric adjustments (brightness/contrast variation ±20\%, CLAHE~\cite{clahe1994} with clip limit $2.0$), and noise injection (Gaussian noise with variance 10-50). Additionally, we employed grid and optical Distortion with $p=0.3$ to simulate optical aberrations common in microscopy.
+
+\subsubsection{Optimization and Training}
+Training utilized mixed-precision computation with automatic loss scaling to accelerate training while maintaining numerical stability, implemented using the PyTorch framework~\cite{Paszke2019}. We employed the AdamW optimizer~\cite{loshchilov2019decoupled} with weight decay of $10^{-4}$ and gradient clipping at norm 1.0 to prevent gradient explosion. Learning rate scheduling followed the OneCycleLR policy~\cite{smith2018super} for most models, with maximum learning rates determined through automated range testing.
+
+To accommodate memory constraints while maintaining effective batch sizes, we implemented gradient accumulation, computing gradients over multiple forward passes before parameter updates. All models utilized dual-GPU training (2× NVIDIA L40S with 48GB memory each), with effective batch sizes varying substantially from 12-40 across models, calculated as physical batch size × accumulation steps × 2 GPUs. Early stopping with patience of 5 to 25 epochs prevented overfitting, monitoring validation IoU with a minimum delta of $10^{-4}$.
+
+\subsubsection{Training Configurations and Hyperparameters}
+
+Table~\ref{tab:training_params} presents the detailed training configurations for all evaluated models. The analysis reveals significant inconsistencies in effective batch sizes across models, ranging from 12 to 40, which may impact fair comparison. Notably, PSPNet fine-tuning achieved the highest effective batch size of 40, while most ResUNet variants maintained moderate batch sizes of 14-16. MA-ResUNet (ResUNet Advanced) used an effective batch size of 16, which is mid-range rather than disadvantaged, as initially suspected. All models employed the AdamW optimizer with varying learning rates: pretrained models used higher rates (1e-4 – 5e-4) while fine-tuned models used lower rates (1e-6 – 1e-5), consistent with transfer learning best practices.
+
+\begin{table}[h]
+\centering
+\caption{Training configurations and early stopping statistics for all models. Effective batch size = batch size × gradient accumulation × GPUs (all models used 2 GPUs).}
+\label{tab:training_params}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{lcccccccccc}
+\toprule
+\textbf{Model} & \textbf{Training} & \textbf{Params} & \textbf{LR} & \textbf{Batch} & \textbf{Grad.} & \textbf{Eff.} & \textbf{Weight} & \textbf{Freeze} & \textbf{Stop} & \textbf{Best} \\
+ & \textbf{Type} & \textbf{(M)} & & \textbf{Size} & \textbf{Accum.} & \textbf{Batch} & \textbf{Decay} & \textbf{Epochs} & \textbf{Epoch} & \textbf{Val IoU} \\
+\midrule
+CBAM-ResUNet & Pretrained & 52.07 & 2e-4 & 7 & 1 & 14 & 1e-4 & 0 & 10 & 0.899 \\
+CBAM-ResUNet & Fine-tuned & 52.07 & 1e-5 & 6 & 2 & 24 & 5e-5 & 15 & 22 & 0.907 \\
+U-Net & Pretrained & 45.20 & 2e-4 & 10 & 1 & 20 & 1e-4 & 0 & 15 & 0.897 \\
+U-Net & Fine-tuned & 45.20 & 1e-5 & 10 & 2 & 40 & 5e-5 & 15 & 23 & 0.898 \\
+MA-ResUNet & Pretrained & 19.57 & 5e-4 & 2 & 4 & 16 & 1e-4 & 0 & 11 & 0.905 \\
+MA-ResUNet & Fine-tuned & 19.57 & 1e-5 & 2 & 4 & 16 & 1e-4 & 10 & 17 & 0.912 \\
+MA-ResUNet-Mini & Pretrained & 7.66 & 5e-4 & 4 & 2 & 16 & 1e-4 & 0 & 9 & 0.900 \\
+MA-ResUNet-Mini & Fine-tuned & 7.66 & 1e-5 & 4 & 2 & 16 & 1e-4 & 10 & 17 & 0.903 \\
+HRNet & Pretrained & 65.85 & 3e-4 & 10 & 1 & 20 & 1e-4 & 0 & 11 & 0.901 \\
+HRNet & Fine-tuned & 65.85 & 5e-6 & 10 & 1 & 20 & 5e-5 & 4 & 23 & 0.907 \\
+LC-ResUNet & Pretrained & 58.06 & 2e-4 & 8 & 1 & 16 & 1e-4 & 0 & 15 & 0.912 \\
+LC-ResUNet & Fine-tuned & 58.06 & 1e-5 & 8 & 2 & 32 & 5e-5 & 15 & 47 & 0.903 \\
+PSPNet & Pretrained & 70.40 & 3e-6 & 6 & 1 & 12 & 1e-4 & 0 & 25 & 0.882 \\
+PSPNet & Fine-tuned & 70.40 & 1e-6 & 10 & 2 & 40 & 5e-5 & 15 & 12 & 0.887 \\
+LightM-UNet & Pretrained & 10.40 & 1e-4 & 1 & 8 & 16 & 1e-5 & 0 & 11 & 0.898 \\
+LightM-UNet & Fine-tuned & 10.40 & 1e-5 & 1 & 8 & 16 & 1e-5 & 10 & 8 & 0.915 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+The training logs reveal that most models converged well before their configured maximum epochs, with early stopping triggered between epochs 8–47. This suggests appropriate regularization and learning rate scheduling. However, the substantial variation in effective batch sizes (particularly PSPNet with 12 vs. 40 for pretrained and fine-tuned versions respectively) raises concerns about fair comparison and may partially explain performance differences beyond architectural choices. The use of dual-GPU training across all models ensured reasonable batch sizes, though the range from 12 to 40 remains considerable.
+
+\subsection{Statistical Evaluation Methodology}
+\label{subsec:evaluation}
+
+Model performance was evaluated on a combined test set of 1,019 images comprising 653 images from the held-out BxPC-3 cell line (within-distribution) and 366 images from the external \dsDTS{} test dataset (pure out-of-distribution, never seen during training). We computed standard segmentation metrics including IoU, Dice coefficient, precision, recall, and F1 score at the pixel level.
+
+Statistical significance was assessed using non-parametric tests appropriate for non-normally distributed performance metrics. The Wilcoxon signed-rank test~\cite{Wilcoxon1945} compared paired model performances, while the Mann-Whitney U test~\cite{MannWhitney1947} evaluated unpaired comparisons. We report 95\% confidence intervals computed via bootstrap resampling~\cite{Efron1979} with 10,000 iterations. Effect sizes were quantified using Cliff's Delta~\cite{Cliff1993} to assess practical significance beyond statistical significance.
+
+A comprehensive Friedman test~\cite{Friedman1937} across all 16 model variants (8 architectures × 2 training strategies) with blocks = images (n = 1,019) and repeated measures across all 16 configurations revealed significant differences ($\chi^2 = 3758.72$, df = 15, $p < 10^{-300}$), confirming that model selection substantially impacts performance. The large chi-square statistic reflects the use of the complete dataset (all 1,019 test images), maximizing statistical power. Post-hoc pairwise comparisons with Bonferroni correction identified specific performance differences between architectures.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Classical image processing}
+\label{sec:results-classical}
+In order to evaluate the performance of the developed classical segmentation methods, 5-fold cross-validation was performed on a manually annotated dataset of 72 bright-field images covering four spheroid models (PC-3, BxPC-3, A549, and MIA PaCa-2), as shown in Table~\ref{tab:classical_iou_comparison}. The three implemented methods consistently achieved high segmentation accuracy, with median IoU scores of 0.9656, 0.9643, and 0.9640, respectively. The effectiveness of these methods was further validated through comparative evaluation against publicly available tools, revealing either superior or at least equivalent performance. 
+
+\begin{table}[H]
+\centering
+\caption{Median IoU (5-fold CV, 72 images). Higher is better.}
+\label{tab:classical_iou_comparison}
+\begin{tabular}{l S[table-format=2.2]}
+\toprule
+\textbf{Method} & \textbf{Median IoU (\%)} \\
+\midrule
+\multicolumn{2}{l}{\textit{Developed classical methods (prusek-spheroid)}}\\
+Sauvola thresholding           & \bfseries 96.56 \\
+Niblack thresholding           & 96.43 \\
+Gaussian adaptive thresholding & 96.40 \\
+\addlinespace
+\multicolumn{2}{l}{\textit{Other benchmarked tools}}\\
+SpheroidJ \cite{2021SpheroidJ}             & 95.92 \\
+micro\_sam -- vit\_b \cite{micro_sam}      & 93.80 \\
+SpheroScan \cite{2023spheroscan}           & 92.66 \\
+AnaSP -- Automatic \cite{2015AnaSP}        & 83.44 \\
+AnaSP -- Multiple objects \cite{2015AnaSP} & 83.44 \\
+AnaSP -- VGG-16 \cite{2015AnaSP}           & 39.66 \\
+\bottomrule
+\end{tabular}
+\end{table}
+% 
+These classical methods are supervised and not zero-shot. They require a priori knowledge of a small number of representative spheroids (typically 1–5 are sufficient) to tune the parameters effectively. When applied to datasets of similar characteristics, previously optimized parameters can often be reused without the need for re-annotation or re-tuning. A comprehensive statistical analysis of these classical methods is provided in \cite{prusek2024spheroid}.
+
+\subsection{Deep Learning Model Performance}
+\label{sec:results-deep}
+
+We evaluated 16 model configurations, consisting of 8 architectures and 2 training strategies, as detailed in Section \ref{sec:segDeep}. The evaluation was conducted on a unified test set that included 1,019 images: 653 images from the held-out BxPC-3 cell line and 366 images from the external \dsDTS{} test dataset, which provides a purely out-of-distribution (OOD) assessment, as it was never exposed during training. This comprehensive evaluation allowed us to assess both within-distribution and cross-dataset generalization capabilities.
+
+\subsubsection{Overall Performance Comparison}
+
+Table~\ref{tab:model_performance} presents the complete performance metrics for all evaluated models. CBAM-ResUNet achieved the highest overall IoU of 0.9344 (95\% CI\footnote{CI=Confidence Interval}: 0.9293-0.9392) in its pretrained configuration, followed by standard U-Net with pretrained weights (IoU = 0.9287, 95\% CI: 0.9229-0.9340). Notably, seven of eight architectures performed significantly better with pretrained weights (all $p < 0.05$ in paired Wilcoxon tests on 1,019 images).
+
+\begin{table}[h]
+\centering
+\caption{Model performance on unified test set (n=1,019). Best values in each category are highlighted in bold.}
+\label{tab:model_performance}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Model} & \textbf{Training} & \textbf{IoU} & \textbf{Dice} & \textbf{Precision} & \textbf{Recall} & \textbf{Time (ms)}\textsuperscript{a} \\
+\midrule
+CBAM-ResUNet & Pretrained & \textbf{0.9344} & \textbf{0.9637} & 0.9752 & \textbf{0.9572} & 200.3 \\
+CBAM-ResUNet & Fine-tuned & 0.9272 & 0.9594 & 0.9750 & 0.9499 & 200.2 \\
+U-Net & Pretrained & 0.9287 & 0.9599 & 0.9741 & 0.9519 & 44.1 \\
+U-Net & Fine-tuned & 0.9156 & 0.9523 & 0.9765 & 0.9361 & 44.3 \\
+MA-ResUNet & Pretrained & 0.9248 & 0.9579 & 0.9767 & 0.9460 & 93.4 \\
+MA-ResUNet & Fine-tuned & 0.9187 & 0.9538 & 0.9746 & 0.9397 & 93.2 \\
+MA-ResUNet-Mini & Pretrained & 0.9195 & 0.9551 & 0.9733 & 0.9437 & 55.0 \\
+MA-ResUNet-Mini & Fine-tuned & 0.9155 & 0.9512 & 0.9726 & 0.9395 & 55.1 \\
+HRNet & Pretrained & 0.9196 & 0.9549 & 0.9765 & 0.9405 & \textbf{26.9} \\
+HRNet & Fine-tuned & 0.9143 & 0.9514 & 0.9754 & 0.9355 & \textbf{26.9} \\
+LC-ResUNet & Pretrained & 0.9149 & 0.9524 & \textbf{0.9811} & 0.9313 & 58.0 \\
+LC-ResUNet & Fine-tuned & 0.9082 & 0.9461 & 0.9723 & 0.9308 & 58.0 \\
+PSPNet & Pretrained & 0.9072 & 0.9470 & 0.9720 & 0.9328 & 46.5 \\
+PSPNet & Fine-tuned & 0.9058 & 0.9462 & 0.9709 & 0.9317 & 46.6 \\
+LightM-UNet & Pretrained & 0.9011 & 0.9444 & 0.9823 & 0.9161 & 172.4 \\
+LightM-UNet & Fine-tuned & 0.9097 & 0.9484 & 0.9789 & 0.9279 & 171.5 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\footnotesize{\textsuperscript{a}Inference times measured on NVIDIA L40S GPU (48GB VRAM) using the evaluation pipeline with warm-up (30 iterations) and synchronization for precise timing. Models evaluated with batch size 1, no augmentations, on 1024×1024 px images.}
+\end{table}
+
+\subsubsection{Statistical Analysis of Training Strategies}
+The comparison between pretrained and fine-tuned models revealed an unexpected finding: models pretrained on the diverse \dsMix{} dataset (which contains 32,367 images with varying annotation quality) consistently outperformed those that were fine-tuned on the high-quality \dsHQ{} dataset (comprising 22,683 expert-corrected annotations).
+
+The pretrained models achieved a mean Intersection over Union (IoU) of 0.9188 ± 0.0942, while the fine-tuned models had a mean IoU of 0.9144 ± 0.1029. To thoroughly evaluate the differences across all 16 model configurations, we utilized the Friedman test—a non-parametric alternative to repeated measures ANOVA suitable for comparing multiple related samples. In this case, each image served as a block (n = 1,019 blocks) with repeated measurements across all 16 model configurations. The test revealed highly significant differences among the models ($\chi^2$ = 789.23, df = 15, $p < 10^{-158}$), confirming that model performance varies significantly depending on architecture and training strategy.
+
+Paired Wilcoxon signed-rank tests on per-image IoU values (n = 1,019 per model) showed statistically significant differences for all eight architectures (all $p < 0.05$). Seven architectures performed better when pretrained, with U-Net exhibiting the most substantial improvement (W = 63,318, $p < 0.001$, +1.30\%). Conversely, only LightM-UNet demonstrated benefits from fine-tuning (W = 111,269, $p < 0.001$, +0.86\% improvement for the fine-tuned model).
+A Mann-Whitney U test comparing all pretrained models to the fine-tuned models indicated a statistically significant difference (U = 34,242,824, $p$ = 0.0007) with a small effect size (Cliff's $\delta$ = 0.0306, favoring pretrained models). Bootstrap confidence intervals (10,000 iterations) confirmed robust performance, with CBAM-ResUNet achieving the narrowest interval among the pretrained models [0.9293-0.9392], indicating consistent high performance.
+
+\subsubsection{Cross-Dataset Performance Analysis}
+
+To assess generalization capabilities, we evaluated models separately on the \dsHQ{} test set (653 BxPC-3 images, within-distribution) and the external \dsDTS{} test set (366 images, out-of-distribution). Table~\ref{tab:cross_dataset_performance} presents the disaggregated performance metrics, revealing distinct patterns in model behavior across datasets.
+
+\begin{table}[h]
+\centering
+\caption{Cross-dataset performance comparison showing IoU scores on \dsHQ{} (within-distribution) and \dsDTS{} (out-of-distribution) test sets. $\Delta$ represents the performance drop from \dsHQ{} to \dsDTS{}.}
+\label{tab:cross_dataset_performance}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Model} & \textbf{Training} & \textbf{\dsHQ{} IoU} & \textbf{\dsDTS{} IoU} & \textbf{$\Delta$ IoU} & \textbf{$\Delta$ (\%)} \\
+\midrule
+U-Net & Pretrained & \textbf{0.9457} & 0.8983 & -0.0474 & -5.01 \\
+CBAM-ResUNet & Fine-tuned & 0.9439 & 0.8974 & -0.0465 & -4.93 \\
+CBAM-ResUNet & Pretrained & 0.9435 & \textbf{0.9183} & \textbf{-0.0252} & \textbf{-2.67} \\
+MA-ResUNet-Mini & Fine-tuned & 0.9393 & 0.8730 & -0.0663 & -7.06 \\
+MA-ResUNet & Fine-tuned & 0.9383 & 0.8836 & -0.0547 & -5.83 \\
+U-Net & Fine-tuned & 0.9359 & 0.8795 & -0.0564 & -6.02 \\
+MA-ResUNet & Pretrained & 0.9352 & 0.9063 & -0.0289 & -3.09 \\
+LC-ResUNet & Fine-tuned & 0.9334 & 0.8632 & -0.0702 & -7.52 \\
+HRNet & Fine-tuned & 0.9316 & 0.8835 & -0.0481 & -5.16 \\
+MA-ResUNet-Mini & Pretrained & 0.9316 & 0.8980 & -0.0336 & -3.61 \\
+LightM-UNet & Fine-tuned & 0.9295 & 0.8744 & -0.0551 & -5.93 \\
+LC-ResUNet & Pretrained & 0.9287 & 0.8901 & -0.0386 & -4.16 \\
+HRNet & Pretrained & 0.9275 & 0.9055 & -0.0220 & -2.37 \\
+PSPNet & Pretrained & 0.9263 & 0.8732 & -0.0531 & -5.73 \\
+PSPNet & Fine-tuned & 0.9261 & 0.8696 & -0.0565 & -6.10 \\
+LightM-UNet & Pretrained & 0.9151 & 0.8761 & -0.0390 & -4.26 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+On the \dsHQ{} test set, U-Net (pretrained) achieved the highest IoU of 0.9457, demonstrating superior performance on within-distribution data. However, on the external \dsDTS{} dataset, CBAM-ResUNet (pretrained) excelled with IoU of 0.9183, the highest among all models. HRNet (pretrained) exhibited the most robust generalization with the smallest relative performance drop of only 2.37\%, maintaining IoU of 0.9055 on \dsDTS{} despite starting from a lower baseline on \dsHQ{} (0.9275).
+
+
+The analysis reveals that pretrained models consistently demonstrate better cross-dataset generalization. On \dsDTS{}, pretrained models achieved mean IoU of 0.8957 compared to 0.8780 for fine-tuned models—a statistically significant difference of 1.77\% ($p < 0.001$). Conversely, on \dsHQ{}, fine-tuned models showed marginal superiority (0.9347 vs 0.9317), though this 0.30\% difference lacks practical significance.
+
+\subsubsection{Annotation Strategy Divergence:}
+\label{subsub:AnnotationStrategyDivergence}
+Performance differences between datasets stem not only from segmentation accuracy but also from divergent annotation strategies. The \dsHQ{} dataset, generated with our semi-automatic pipeline and expert refinement, adopts an inclusive approach that captures the entire spheroid structure—from dense core to peripheral degrading regions. In contrast, external datasets such as \dsDTS{} restrict annotations to the dense core, systematically excluding peripheral tissue, debris, and loosely attached cells. As a result, models trained on \dsHQ{} correctly segment complete spheroids when applied to \dsDTS{}, but these biologically relevant regions are penalized as over-segmentation, lowering IoU scores by 2–7\%. Figure~\ref{fig:segmentation_failures}(a,d) exemplifies this: both HRNet and CBAM-ResUNet delineate larger regions than annotated in \dsDTS{}, yet the predictions align with the visible spheroid boundaries. This highlights a key challenge in biomedical image analysis: inconsistent annotation guidelines across datasets can distort performance metrics and mask true model capability.
+
+\subsubsection{Analysis of Segmentation Failures and Dataset-Specific Challenges}
+\label{sec:failure_analysis}
+
+While our models achieve high overall performance, understanding failure modes is crucial for identifying limitations and guiding future improvements. We conducted a detailed analysis of segmentation failures across both the \dsHQ{} (BxPC-3) and \dsDTS{} test sets to characterize model behavior under challenging conditions.
+
+\textbf{Failure Mode Analysis:}\nopagebreak
+
+\textbf{1. Annotation Inconsistency:} 
+The main source of apparent “failures” on \dsDTS{} is the previously described divergence in annotation strategy (see Section~\ref{subsub:AnnotationStrategyDivergence}). Both models segment the full spheroid including peripheral degrading regions, but these areas are excluded from the \dsDTS{} ground truth and counted as over-segmentation. This explains the consistent 2–7\% IoU drop, reflecting conflicting definitions of the region of interest rather than model weakness. (Figure~\ref{fig:dts_280_hrnet}, \ref{fig:dts_280_cbam})
+
+\textbf{2. Boundary Ambiguity in Advanced Spheroids:}
+Day 4 spheroids in \dsHQ{} exhibit ambiguous transitions between necrotic core and surrounding tissue. Although the ground truth includes the full spheroid, both models struggle with boundary placement, lowering IoU to 0.44–0.67 compared to 0.85–0.95 for early spheroids. (Figure~\ref{fig:spheroseg_day4_hrnet}, \ref{fig:spheroseg_day4_cbam})
+
+\textbf{3. Artifact-driven Misidentification:}
+Occasionally models mistake dark artifacts for spheroids, e.g. in a BxPC-3 day 1 image. Such errors, affecting 2.1\% of CBAM-ResUNet and 3.9\% of HRNet predictions, stem from reliance on intensity contrast. In practice, these are minor in the \app{} tool, as incorrect masks can be deleted and corrected manually. (Figure~\ref{fig:spheroseg_day1_hrnet}, \ref{fig:spheroseg_day1_cbam})
+
+\begin{figure*}[!t]
+\centering
+
+% First row - HRNet predictions
+\begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{result_images/280_hrnet.png}
+    \caption{\dsDTS{} test sample - HRNet}
+    \label{fig:dts_280_hrnet}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{result_images/bxpc-3_bxpc-3_pokus1_den4_1-20_hrnet.png}
+    \caption{\dsHQ{} test sample - HRNet}
+    \label{fig:spheroseg_day4_hrnet}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{result_images/bxpc-3_bxpc-3_pokus2_den1_1-20_hrnet.png}
+    \caption{\dsHQ{} test sample - HRNet}
+    \label{fig:spheroseg_day1_hrnet}
+\end{subfigure}
+
+\vspace{0.3cm}
+
+% Second row - CBAM-ResUNet predictions
+\begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{result_images/280_cbam.png}
+    \caption{\dsDTS{} test sample - CBAM-ResUNet}
+    \label{fig:dts_280_cbam}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{result_images/bxpc-3_bxpc-3_pokus1_den4_1-20_cbam.png}
+    \caption{\dsHQ{} test sample - CBAM-ResUNet}
+    \label{fig:spheroseg_day4_cbam}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{result_images/bxpc-3_bxpc-3_pokus2_den1_1-20_cbam.png}
+    \caption{\dsHQ{} test sample - CBAM-ResUNet}
+    \label{fig:spheroseg_day1_cbam}
+\end{subfigure}
+\caption{Representative segmentation failures showing model limitations and annotation differences. Blue = ground truth, red = prediction. Top: HRNet, bottom: CBAM-ResUNet. (a,d) \dsDTS{}: models over-segment beyond the dense core, consistent with its annotation policy. (b,e) \dsHQ{} day 4: ambiguous core–periphery boundaries complicate annotation. (c,f) \dsHQ{} day 1: both models mis-segment a corner artifact, a failure easily corrected in the \app{} interface}
+\label{fig:segmentation_failures}
+\end{figure*}
+
+
+\section{SpheroSeg: Web-Based Analysis Platform}
+\label{sec:spheroseg}
+
+SpheroSeg is an open-source, user-friendly web application designed for the automated analysis of bright-field microscopy images featuring 3D tumor spheroids. It is intended for routine laboratory use and does not require any programming expertise. The platform is available as a hosted service on 
+\href{https://spherosegapp.utia.cas.cz/}{https://spherosegapp.utia.cas.cz/} and as a Dockerized package with source code and documentation on \href{https://github.com/michalprusek/SpheroSeg}{https://github.com/michalprusek/SpheroSeg}; MIT license.
+
+\subsection{Workflow and Features}
+Users can upload bright-field images and initiate automatic segmentation. If necessary, they can make minor edits using an integrated polygon editor, which allows for vertex manipulation, boundary refinement, and splitting. The application provides standard morphometric measurements, including area, perimeter, equivalent diameter, circularity, solidity, and convexity. Additionally, it supports export to COCO JSON and Excel formats for further analysis.
+
+\subsection{Morphometric Parameter Definitions}
+\label{sec:metrics}
+
+The \app{} application computes a standard comprehensive set of morphometric parameters for each segmented spheroid, enabling quantitative characterization of morphological changes over time and across experimental conditions. All measurements are computed in pixel units (px for lengths, px\textsuperscript{2} for areas) and can be converted to physical units using the microscope calibration factor. The following metrics are calculated for each segmented spheroid polygon, including proper handling of internal holes (necrotic cores).
+
+\subsubsection{Area-based Metrics}
+
+\textbf{Area:} The total enclosed area of the spheroid polygon, computed using the Shoelace formula (Gaussian area formula) with subtraction of internal hole areas:
+\begin{equation}
+A = \left|\frac{1}{2} \sum_{i=0}^{n-1} (x_i y_{i+1} - x_{i+1} y_i)\right| - \sum_{j=1}^{h} A_{\text{hole}_j}
+\end{equation}
+where $n$ is the number of vertices, indices are modular (vertex $n$ connects to vertex 0), and $h$ is the number of internal holes. This metric directly quantifies spheroid size and is fundamental for growth rate analysis.
+
+\textbf{Solidity:} The ratio of the spheroid area to its convex hull area, measuring the presence of concavities:
+\begin{equation}
+S = \frac{A_{\text{spheroid}}}{A_{\text{convex hull}}}
+\end{equation}
+Values range from 0 to 1, where 1 indicates a perfectly convex shape. Lower solidity values indicate irregular boundaries often associated with invasive phenotypes or drug-induced morphological changes.
+
+\textbf{Extent:} The ratio of spheroid area to its axis-aligned bounding box (AABB) area:
+\begin{equation}
+E = \frac{A_{\text{spheroid}}}{\text{width} \times \text{height}}
+\end{equation}
+where width = $\max(x) - \min(x)$ and height = $\max(y) - \min(y)$. This metric quantifies how efficiently the spheroid fills its axis-aligned bounding rectangle, with values approaching 1 for rectangular shapes and lower values for irregular or diagonal orientations. Note that this uses the axis-aligned bounding box (AABB), not the minimum area bounding rectangle which would be rotationally optimized.
+
+\subsubsection{Perimeter-based Metrics}
+
+\textbf{Perimeter:} The total boundary length including both external and internal (hole) boundaries:
+\begin{equation}
+P = \sum_{i=0}^{n-1} \sqrt{(x_{i+1} - x_i)^2 + (y_{i+1} - y_i)^2} + \sum_{j=1}^{h} P_{\text{hole}_j}
+\end{equation}
+Following the ImageJ/scikit-image convention, hole perimeters are added to the total, providing a complete measure of boundary complexity.
+
+\textbf{Circularity:} A shape descriptor quantifying similarity to a perfect circle:
+\begin{equation}
+C = \frac{4\pi A}{P^2}
+\end{equation}
+Theoretically bounded by 1 (perfect circle), this metric may slightly exceed 1 due to pixelization effects and is therefore clamped to [0, 1]. A square yields $C \approx 0.785$, providing a reference for interpreting intermediate values.
+
+\textbf{Convexity:} The ratio of the convex hull perimeter to the actual perimeter:
+\begin{equation}
+\text{Conv} = \frac{P_{\text{convex hull}}}{P_{\text{spheroid}}}
+\end{equation}
+This metric quantifies boundary smoothness, with values near 1 indicating smooth contours and lower values revealing irregular, potentially invasive edges.
+
+\textbf{Compactness:} A normalized shape descriptor combining area and perimeter, defined as:
+\begin{equation}
+\text{Compactness} = \frac{P^2}{4\pi A}
+\end{equation}
+This is the reciprocal of circularity, where values equal 1 for a perfect circle and increase for more complex shapes. This formulation follows the standard definition used in ImageJ and ensures scale invariance. Alternative definitions exist (e.g., $\sqrt{A}/P$), but we adopt the most common formulation for consistency with existing literature.
+
+\subsubsection{Size Metrics}
+
+\textbf{Equivalent Diameter:} The diameter of a circle with the same area as the spheroid:
+\begin{equation}
+D_{\text{eq}} = \sqrt{\frac{4A}{\pi}}
+\end{equation}
+This provides a single size measure facilitating comparison between spheroids of different shapes, particularly useful for growth curve analysis.
+
+\textbf{Feret Diameters:} Caliper diameters measuring the spheroid extent in various orientations, computed using the rotating calipers algorithm~\cite{Toussaint1983} on the convex hull:
+\begin{itemize}\setlength\itemsep{-0.2em}
+    \item \textbf{Maximum Feret Diameter:} The maximum distance between parallel tangent lines (longest caliper diameter)
+    \item \textbf{Minimum Feret Diameter:} The minimum distance between parallel tangent lines (shortest caliper diameter)
+    \item \textbf{Orthogonal Feret Diameter:} The width measured perpendicular to the maximum Feret axis
+\end{itemize}
+
+\textbf{Aspect Ratio:} The ratio of maximum to minimum Feret diameters:
+\begin{equation}
+AR = \frac{D_{\text{Feret max}}}{D_{\text{Feret min}}}
+\end{equation}
+Values equal to 1 indicate circular shapes, while higher values quantify elongation, relevant for characterizing drug-induced morphological transitions.
+
+\textbf{Bounding Box Dimensions:} The width and height of the axis-aligned bounding box (AABB) enclosing the spheroid, providing rapid size estimates without complex geometric calculations.
+
+\subsubsection{Implementation Considerations}
+
+All metrics incorporate numerical safeguards including division-by-zero protection (returning 0 for undefined cases), NaN/Infinity checking, and physical bound clamping (e.g., circularity $\leq$ 1). The computational complexity is $O(n)$ for most metrics, where $n$ is the vertex count, except for convex hull-based calculations requiring $O(n \log n)$ via Graham scan algorithm~\cite{Graham1972}. Polygons require a minimum of 3 vertices for valid computation, and all algorithms produce deterministic results ensuring reproducibility across analyses.
+
+The metrics implementation follows established conventions from ImageJ \cite{Rueden2017} and scikit-image \cite{vanDerWalt2014}, ensuring compatibility with existing image analysis workflows in the field. For spheroids with internal necrotic cores, the hole subtraction in area calculation but addition in perimeter calculation correctly captures both size reduction and boundary complexity increase associated with central necrosis.
+
+\subsection{Models and Performance}
+
+Three production-ready models are provided, each selected for specific use cases based on a comprehensive performance evaluation across multiple datasets. Our extensive benchmarking informed the model selection on both internal and external test sets:
+
+\begin{itemize}\setlength\itemsep{-0.2em}
+    \item \textbf{U-Net (\dsHQ-optimized)}: Despite its simple architecture, U-Net achieved the highest accuracy on the \dsHQ{} test set (IoU = 0.9457), outperforming more complex architectures with attention mechanisms. This unexpected result led to its inclusion in the production system as the primary model for high-quality spheroid segmentation. The model was fine-tuned explicitly on the \dsHQ{} dataset, which contains expert-corrected annotations from our laboratory, making it ideal for users working with similar imaging conditions and annotation standards.
+    
+    \item \textbf{CBAM-ResUNet}: Selected for maximum robustness and cross-dataset generalization, achieving the best performance on the external \dsDTS{} dataset (IoU = 0.9183) among all evaluated architectures. This model incorporates Convolutional Block Attention Modules for enhanced feature refinement, making it particularly effective for challenging cases with poor contrast or complex morphologies.
+    
+    \item \textbf{HRNet}: Optimized for real-time processing with the fastest inference speed while maintaining competitive accuracy (IoU = 0.9196 on combined test sets). The High-Resolution Network architecture maintains high-resolution representations throughout the network, enabling efficient processing without sacrificing segmentation quality.
+\end{itemize}
+
+The inclusion of U-Net alongside more sophisticated architectures reflects our empirical finding that model complexity does not always correlate with performance—simpler architectures can achieve superior results when trained adequately on high-quality, domain-specific data. This diversity in model offerings allows users to select the most appropriate architecture based on their specific requirements: accuracy (U-Net), robustness (CBAM-ResUNet), or speed (HRNet).
+
+\subsubsection{End-to-End Performance Analysis}
+The web application provides sub-second response times for complete segmentation workflows. Table~\ref{tab:e2e-workflow} illustrates the detailed breakdown of processing times for the entire end-to-end pipeline, from image upload to the final segmentation result.
+
+\begin{table}[!h]
+\centering
+\caption{End-to-end workflow performance breakdown (milliseconds) for complete segmentation pipeline. Based on N=522 real production measurements per model with 95\% CI on NVIDIA RTX A5000 GPU (24GB VRAM) in production environment.}
+\label{tab:e2e-workflow}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{@{}lrrrp{6.5cm}@{}}
+\toprule
+\textbf{Workflow Step} & \textbf{HRNet} & \textbf{CBAM-ResUNet} & \textbf{U-Net} & \textbf{Description} \\
+\midrule
+Image Upload & 4.1 ± 0.1 & 4.0 ± 0.1 & 3.7 ± 0.1 & HTTP upload and validation \\
+Queue Processing & 6.8 ± 0.2 & 6.6 ± 0.2 & 6.2 ± 0.1 & Asynchronous task queue \\
+Preprocessing & 0.46 ± 0.01 & 0.42 ± 0.01 & 0.43 ± 0.01 & Image normalization and resizing \\
+ML Inference & 200.9 ± 1.5 & 392.5 ± 1.0 & 185.4 ± 0.2 & GPU inference at 1024×1024 \\
+Postprocessing & 0.11 ± 0.00 & 0.10 ± 0.00 & 0.11 ± 0.00 & Mask refinement and polygonization \\
+Database Write & 1.37 ± 0.03 & 1.32 ± 0.03 & 1.25 ± 0.02 & Batch database operations \\
+Thumbnail Generation & 1.09 ± 0.03 & 1.06 ± 0.03 & 1.00 ± 0.02 & Initial generation (then cached) \\
+WebSocket Notification & 0.27 ± 0.01 & 0.26 ± 0.01 & 0.25 ± 0.00 & Real-time client update \\
+\midrule
+\textbf{Total E2E Latency} & \textbf{215.2 ± 1.6} & \textbf{406.3 ± 1.2} & \textbf{198.5 ± 0.3} & Complete workflow execution \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\caption{Detailed performance statistics (N=522 production samples per model)}
+\label{tab:performance-stats}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Metric} & \textbf{HRNet} & \textbf{CBAM-ResUNet} & \textbf{U-Net} \\
+\midrule
+Inference Mean (ms) & 200.9 & 392.5 & 185.4 \\
+Inference 95\% CI & [199.4, 202.4] & [391.5, 393.6] & [185.3, 185.6] \\
+Median (ms) & 194.4 & 387.6 & 184.9 \\
+P5--P95 (ms) & 182.8--228.8 & 385.4--420.4 & 183.7--189.6 \\
+CV (\%) & 8.7 & 3.1 & 1.1 \\
+Total E2E Mean (ms) & 215.2 & 406.3 & 198.5 \\
+Total E2E Median (ms) & 211.6 & 400.4 & 197.1 \\
+Total E2E P5--P95 (ms) & 194.0--248.5 & 396.5--436.9 & 194.6--206.4 \\
+Total E2E CV (\%) & 8.7 & 3.4 & 2.0 \\
+Avg. Polygons/Image & 2.5 & 3.9 & 3.0 \\
+Success Rate (\%) & 100.0 & 100.0 & 100.0 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\subsubsection{Performance Measurement Methodology}
+
+End-to-end performance measurements were conducted on the production server equipped with an NVIDIA RTX A5000 GPU (24GB VRAM) using 522 real test images. The measurement script captures actual HTTP API calls to the deployed service, including image upload, task queue processing, preprocessing, GPU inference, postprocessing, database operations, and WebSocket notifications. Each component's timing is extracted from server-side instrumentation to provide accurate breakdowns. The ML service runs in a Docker container with CUDA 12.1, ensuring consistent performance across measurements. All timings represent mean values with 95\% confidence intervals calculated using Student's t-distribution.
+
+\subsubsection{Throughput and Resource Utilization}
+
+The application supports both single-image and batch processing modes. Table~\ref{tab:throughput-metrics} presents throughput capabilities for production deployment.
+
+\begin{table}[!b]
+\centering
+\caption{Throughput metrics for deployed models showing single and batch processing performance on production hardware.}
+\label{tab:throughput-metrics}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Metric} & \textbf{HRNet} & \textbf{CBAM-ResUNet} & \textbf{U-Net} \\
+\midrule
+Single E2E Throughput (img/s) & 4.6 & 2.5 & 5.0 \\
+Inference-only Throughput (img/s) & 5.0 & 2.5 & 5.4 \\
+Batch Throughput (img/s) & 11.8 & 3.9 & 9.3 \\
+Optimal Batch Size & 8 & 2 & 4 \\
+Batch Speedup & 2.57× & 1.56× & 1.86× \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+In routine operation, the platform achieves sub-second end-to-end latency, as detailed in Table~\ref{tab:e2e-workflow}, with times ranging from 198 ms for the U-Net optimized for \dsHQ{} to 406 ms for the CBAM-ResUNet per image. The HRNet model strikes an optimal balance, boasting a total latency of 215 ms while maintaining strong performance across diverse datasets. The system architecture utilizes asynchronous task queuing, unified preprocessing pipelines, and batch database operations to minimize latency at every processing stage. This design allows for real-time interactive segmentation, with throughput rates between 2.5 images per second (for CBAM-ResUNet in single-image mode) and 11.8 images per second (for HRNet in batch mode). Consequently, the system is well-suited for both interactive analysis and high-throughput screening applications.
+
+The U-Net model, specifically optimized for the \dsHQ{} dataset, delivers impressive single-image throughput at 5.0 images per second with an end-to-end latency of 198 ms. In comparison, HRNet achieves a throughput of 4.6 images per second while demonstrating excellent generalization capabilities. Additionally, the GPU-accelerated inference is accessible via a documented REST API, facilitating integration with laboratory information management systems and automated imaging pipelines.
+
+\subsection{Availability and Reproducibility}
+\app{} can be deployed in the cloud or on-premises using Docker, offering identical functionality in both environments. Our repository includes installation instructions, configuration files, and pre-trained weights, which facilitate reproducibility across various setups.
+
+To ensure complete reproducibility of our results, we provide public access to all training data and model weights. The \dsHQ{} dataset, consisting of 22,683 expert-annotated images, and the \dsMix{} dataset, which contains 32,367 images from multiple sources, are available for free download at \href{https://staff.utia.cas.cz/novozada/spheroseg/}{https://staff.utia.cas.cz/novozada/spheroseg/}. Additionally, we offer pre-trained weights for all 16 evaluated models (including 8 architectures with both pre-trained and fine-tuned variants) at the same location. This allows researchers to reproduce our benchmarks or apply these models to their own spheroid segmentation tasks without needing to invest computational resources in training. Furthermore, most of the scripts and evaluations used in our work can be found at \href{https://github.com/michalprusek/SpheroSeg/}{https://github.com/michalprusek/SpheroSeg/}.
+
+\section{Conclusions}
+\label{sec:conclusions}
+In this study, we present a comprehensive pipeline for accurate and scalable segmentation of cancer cell spheroid images from bright-field microscopy. We combined classical image processing with advanced deep learning techniques. Initial segmentation was achieved using optimized adaptive thresholding methods, such as Sauvola, Niblack, and Gaussian thresholding, which were refined through morphological operations and hybrid parameter optimization. These classical methods provided a strong foundation for high-throughput annotation of a large-scale dataset comprising 22,683 images of cancer cell spheroids of the BxPC-3, MIA PaCa-2, HeLa, MCF-7, UFH-001, PC-3, and A549 cell lines. Subsequent correction of the annotations by several experts ensured high-quality segmentation masks, enabling the training of robust deep learning models, including ResUNet variants, HRNet, and PSPNet. 
+
+Our evaluation across different datasets revealed an important insight: the apparent performance differences between these datasets often stem from varying annotation strategies rather than segmentation issues. For instance, while \dsHQ{} uses inclusive annotations that cover the entire biological spheroid structure, external datasets like \dsDTS{} adopt a more restrictive definition that focuses only on dense cores. This difference in annotation-whether spheroids should be defined by optical density or biological continuity-resulted in a systematic decrease of 2-7\% in IoU scores during external validations, despite the models accurately identifying complete spheroid structures. This finding highlights the urgent need for standardized annotation guidelines in biomedical image analysis, emphasizing the importance of biological relevance over mere visual characteristics.
+
+By integrating residual learning, attention mechanisms, and various architectural enhancements, our models have achieved high precision in delineating complex spheroid boundaries. This advancement demonstrates strong generalization across diverse cell lines. We deployed three complementary models: U-Net for standard spheroids (IoU = 0.9457), CBAM-ResUNet for cross-dataset robustness (IoU = 0.9183 on the \dsDTS{}), and HRNet for real-time processing (with an end-to-end latency of 215 ms on NVIDIA RTX A5000 in production). This enables a throughput of 4.6 frames per second for single images and 11.8 frames per second in batch mode, providing comprehensive coverage for various experimental needs. 
+
+A key outcome of this work is the release of a large-scale, high-quality annotated database together with an open-access web application designed for broad usability within the field. This resource not only ensures reproducibility and comparability across studies, but also empowers researchers-irrespective of their computational background-to accelerate discoveries in 3D cancer cell culture analysis. We believe that this combination of extensive data, robust algorithms, and accessible tools has the potential to advance the state of the art significantly, enabling the community to move forward more rapidly in areas such as drug response quantification, morphological profiling, and translational cancer research. Our hybrid pipeline, which combines the efficiency of classical methods with the precision of deep learning, thus offers a scalable, open-source solution for automated spheroid image analysis with a wide-reaching impact.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\section{Inference Speed and Practical Applicability}
+
+Inference speed varied substantially across architectures during model benchmarking on NVIDIA L40S GPU, ranging from 26.9 ms for HRNet to 200.3 ms for CBAM-ResUNet. While CBAM-ResUNet was selected as our primary model due to its superior accuracy (IoU = 0.9344), practical deployment scenarios often require a balance between accuracy and computational efficiency. To identify an optimal complementary model, we employed TOPSIS (Technique for Order of Preference by Similarity to Ideal Solution)~\cite{HwangYoon1981} multi-criteria decision analysis.
+
+TOPSIS normalizes performance metrics using vector normalization and calculates weighted Euclidean distances from ideal and anti-ideal solutions, enabling objective comparison across disparate criteria. Table~\ref{tab:topsis} presents the top three models under different application scenarios, demonstrating how priorities affect model selection.
+
+\subsubsection{TOPSIS details:}
+IoU is treated as a benefit criterion and inference time as a cost criterion. Both metrics undergo vector normalization, where each value is divided by the square root of the sum of squares for that criterion. After normalization, weights are applied (e.g., $w_{\text{IoU}}=0.6$, $w_{\text{time}}=0.4$). The ideal solution is defined as the maximum weighted IoU and minimum weighted time, while the anti-ideal solution uses minimum IoU and maximum time. We then compute Euclidean distances to both solutions, with the final TOPSIS score calculated as $S^- / (S^+ + S^-)$, where $S^+$ and $S^-$ are distances to the ideal and anti-ideal solutions, respectively.
+
+\begin{table}[h]
+\centering
+\caption{TOPSIS analysis for selecting the optimal speed-accuracy trade-off model. Top 3 models ranked by TOPSIS scores (0-1 scale, higher is better) under different weight scenarios.}
+\label{tab:topsis}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Scenario} & \textbf{Weights} & \textbf{Model} & \textbf{TOPSIS Score} & \textbf{IoU} & \textbf{Time (ms)} \\
+\midrule
+\multirow{3}{*}{\parbox{3cm}{Balanced\\(General use)}} & \multirow{3}{*}{60\% acc, 40\% speed} 
+& HRNet (pretrained) & 0.9854 & 0.9196 & 26.9\textsuperscript{b} \\
+& & HRNet (fine-tuned) & 0.9803 & 0.9143 & 26.9\textsuperscript{b} \\
+& & U-Net (pretrained) & 0.9006 & 0.9287 & 44.1 \\
+\hline
+\multirow{3}{*}{\parbox{3cm}{Accuracy-focused}} & \multirow{3}{*}{80\% acc, 20\% speed} 
+& HRNet (pretrained) & 0.9621 & 0.9196 & 26.9\textsuperscript{b} \\
+& & HRNet (fine-tuned) & 0.9492 & 0.9143 & 26.9\textsuperscript{b} \\
+& & U-Net (pretrained) & 0.8999 & 0.9287 & 44.1 \\
+\hline
+\multirow{3}{*}{\parbox{3cm}{Speed-focused}} & \multirow{3}{*}{40\% acc, 60\% speed} 
+& HRNet (pretrained) & 0.9935 & 0.9196 & 26.9\textsuperscript{b} \\
+& & HRNet (fine-tuned) & 0.9911 & 0.9143 & 26.9\textsuperscript{b} \\
+& & U-Net (pretrained) & 0.9006 & 0.9287 & 44.1 \\
+\hline
+\multirow{3}{*}{\parbox{3cm}{Real-time screening\\(Recommended)}} & \multirow{3}{*}{70\% acc, 30\% speed} 
+& HRNet (pretrained) & 0.9775 & 0.9196 & 26.9\textsuperscript{b} \\
+& & HRNet (fine-tuned) & 0.9697 & 0.9143 & 26.9\textsuperscript{b} \\
+& & U-Net (pretrained) & 0.9004 & 0.9287 & 44.1 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\footnotesize{\textsuperscript{b}Inference time measured on NVIDIA L40S GPU with evaluation pipeline.}
+\end{table}
+
+The TOPSIS analysis unequivocally identifies HRNet (pretrained) as the optimal complementary model, achieving the highest scores across all weight scenarios (0.9621-0.9935). This consistency demonstrates HRNet's robust performance regardless of whether accuracy or speed is prioritized. The model achieves fast inference while maintaining IoU = 0.9196, representing only a 1.6\% accuracy trade-off compared to CBAM-ResUNet.
+
+HRNet's architectural efficiency stems from its parallel multi-resolution convolution design, which maintains high-resolution representations throughout the network while exchanging information across scales. This design enables real-time processing suitable for live microscopy, high-throughput screening, and interactive applications where immediate feedback is crucial.
+
+This dual-model strategy provides optimal coverage for diverse use cases: CBAM-ResUNet for maximum accuracy in retrospective analysis and critical measurements, and HRNet for real-time applications requiring rapid throughput without significant accuracy compromise.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{result_images/performance_efficiency_plot_with_params.png}
+\caption{The scatter plot visualizes the relationship between inference time (ms) and IoU score for all 16 model configurations. Pretrained models (opaque circles with black borders) consistently outperform their fine-tuned counterparts (semi-transparent circles with gray borders). Circle sizes are proportional to model parameter counts. The blue shaded region indicates real-time processing capability ($<$ 50 ms), while the green region denotes high accuracy threshold (IoU $>$ 0.92). Inference times measured on NVIDIA L40S GPU.}
+\label{fig:cost_benefit}
+\end{figure}
+
+\subsubsection{Statistical Significance and Practical Relevance}
+
+Failure analysis revealed that CBAM-ResUNet had the lowest failure rate with only 2.1\% of images achieving IoU$ < 0.7$, while LightM-UNet showed the highest failure rate at 6.0\%. Post-hoc analysis with Bonferroni correction ($\alpha$ = 0.05/120 = 0.000417) identified 13 model pairs with practically significant differences ($>$ 2\% IoU).
+
+Variance analysis revealed that pretrained models exhibited slightly lower variance ($\sigma^{2}$
+= 0.00887) compared to fine-tuned models ($\sigma^{2}$ = 0.01058). Levene's test indicated this difference was statistically significant (F = 9.83, $p$ = 0.0017), suggesting that pretrained models not only achieve higher mean performance but also maintain more consistent results across diverse inputs.
+Here we provide extended results and derivations
+that complement the main text.
+
+\bibliographystyle{elsarticle-num} 
+\bibliography{refs}
+\end{document}

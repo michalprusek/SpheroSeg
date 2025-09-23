@@ -1,0 +1,13 @@
+Test,Comparison,Statistic,P-value,Mean_Diff,Significant,Effect
+Wilcoxon Signed-Rank,cbam_unet (pre vs fine),133375.0,4.371652454100494e-41,0.0072272836544458674,Yes,Pretrained better
+Wilcoxon Signed-Rank,resunet_advanced (pre vs fine),206981.0,2.410709645799008e-08,0.006154027393289384,Yes,Pretrained better
+Wilcoxon Signed-Rank,resunet_advanced_mini (pre vs fine),237680.0,0.02100459449759711,0.004038735855957274,Yes,Pretrained better
+Wilcoxon Signed-Rank,resunet_small (pre vs fine),240384.0,0.043411691648313724,0.0067016969825690175,Yes,Pretrained better
+Wilcoxon Signed-Rank,unet (pre vs fine),63318.0,6.565264531166813e-97,0.013026536757060093,Yes,Pretrained better
+Wilcoxon Signed-Rank,hrnet (pre vs fine),233922.0,0.0067607464993306365,0.00529836429262812,Yes,Pretrained better
+Wilcoxon Signed-Rank,pspnet_new (pre vs fine),219749.0,1.9822178427183995e-05,0.0014424443443114617,Yes,Pretrained better
+Wilcoxon Signed-Rank,lightm_unet (pre vs fine),111269.0,4.274495122632658e-56,-0.008608584534437861,Yes,Finetuned better
+Mann-Whitney U,All pretrained vs finetuned,34242824.0,0.000728322916943344,0.0044100630932280005,Yes,Cliff's δ = 0.0306
+Levene's Test,Variance: pre vs fine,9.8284856471098,0.0017213485794354837,-0.001717794633949516,Yes,Unequal variances
+Friedman Test,All 16 models,3758.715808675912,0.0,,Yes,Models differ
+Friedman (Architectures),8 pretrained architectures,2678.921440261868,0.0,,Yes,Architectures differ

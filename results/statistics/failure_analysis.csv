@@ -1,0 +1,17 @@
+Model,Training,Failures,Total,Failure_Rate_%
+CBAM-ResUNet,Pretrained,21,1019,2.060843964671246
+cbam_unet,Fine-tuned,23,1019,2.2571148184494603
+MA-ResUNet-Mini,Pretrained,34,1019,3.3366045142296366
+resunet_advanced_mini,Fine-tuned,35,1019,3.434739941118744
+resunet_advanced,Fine-tuned,36,1019,3.532875368007851
+PSPNet,Pretrained,36,1019,3.532875368007851
+MA-ResUNet,Pretrained,37,1019,3.631010794896958
+U-Net,Pretrained,38,1019,3.729146221786065
+HRNet,Pretrained,40,1019,3.9254170755642788
+unet,Fine-tuned,41,1019,4.023552502453385
+LC-ResUNet,Pretrained,42,1019,4.121687929342492
+hrnet,Fine-tuned,43,1019,4.2198233562316
+resunet_small,Fine-tuned,44,1019,4.317958783120707
+pspnet_new,Fine-tuned,47,1019,4.612365063788027
+LightM-UNet,Pretrained,59,1019,5.789990186457311
+lightm_unet,Fine-tuned,61,1019,5.986261040235525

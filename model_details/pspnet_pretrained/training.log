@@ -1,0 +1,123 @@
+2025-07-25 10:29:37,603 - INFO - ============================================================
+2025-07-25 10:29:37,603 - INFO - COMPLETE DATASET SUMMARY
+2025-07-25 10:29:37,603 - INFO - ============================================================
+2025-07-25 10:29:37,603 - INFO - Train samples: 28,778
+2025-07-25 10:29:37,603 - INFO - Val samples:   2,539
+2025-07-25 10:29:37,603 - INFO - Test samples:  653
+2025-07-25 10:29:37,603 - INFO - Total samples: 31,970
+2025-07-25 10:29:37,603 - INFO - ============================================================
+2025-07-25 11:14:51,155 - INFO - Epoch 1/25
+2025-07-25 11:14:51,155 - INFO - Train - Loss: 4.4096, IoU: 0.5564, Dice: 0.6916, F1: 0.6916
+2025-07-25 11:14:51,155 - INFO - Val - Loss: 1.1839, IoU: 0.8290, Dice: 0.9030, F1: 0.9030
+2025-07-25 11:14:51,155 - INFO - Loss Components - Focal: 1.1660, Dice: 0.3159, Iou: 0.4546, Boundary: 0.0000, Aux_focal: 1.1201, Aux_dice: 0.4378, Aux_iou: 0.5899, Aux_weight: 0.3983, Main_loss: 3.1024, Aux_loss: 3.2680
+2025-07-25 11:14:52,043 - INFO - Saved best model with IoU: 0.8290
+2025-07-25 11:59:55,189 - INFO - Epoch 2/25
+2025-07-25 11:59:55,189 - INFO - Train - Loss: 1.4346, IoU: 0.7277, Dice: 0.8348, F1: 0.8348
+2025-07-25 11:59:55,189 - INFO - Val - Loss: 0.9796, IoU: 0.8408, Dice: 0.9096, F1: 0.9096
+2025-07-25 11:59:55,189 - INFO - Loss Components - Focal: 0.2263, Dice: 0.1820, Iou: 0.2971, Boundary: 0.0000, Aux_focal: 0.2907, Aux_dice: 0.2666, Aux_iou: 0.4095, Aux_weight: 0.3998, Main_loss: 0.9316, Aux_loss: 1.2575
+2025-07-25 11:59:56,417 - INFO - Saved best model with IoU: 0.8408
+2025-07-25 12:45:14,606 - INFO - Epoch 3/25
+2025-07-25 12:45:14,607 - INFO - Train - Loss: 1.1141, IoU: 0.7727, Dice: 0.8657, F1: 0.8657
+2025-07-25 12:45:14,607 - INFO - Val - Loss: 0.5844, IoU: 0.8510, Dice: 0.9164, F1: 0.9164
+2025-07-25 12:45:14,607 - INFO - Loss Components - Focal: 0.1516, Dice: 0.1517, Iou: 0.2539, Boundary: 0.0000, Aux_focal: 0.2066, Aux_dice: 0.2332, Aux_iou: 0.3668, Aux_weight: 0.4000, Main_loss: 0.7089, Aux_loss: 1.0132
+2025-07-25 12:45:15,624 - INFO - Saved best model with IoU: 0.8510
+2025-07-25 13:30:23,851 - INFO - Epoch 4/25
+2025-07-25 13:30:23,851 - INFO - Train - Loss: 0.9300, IoU: 0.8024, Dice: 0.8853, F1: 0.8853
+2025-07-25 13:30:23,851 - INFO - Val - Loss: 0.5556, IoU: 0.8433, Dice: 0.9113, F1: 0.9113
+2025-07-25 13:30:23,851 - INFO - Loss Components - Focal: 0.1129, Dice: 0.1313, Iou: 0.2240, Boundary: 0.0000, Aux_focal: 0.1621, Aux_dice: 0.2106, Aux_iou: 0.3369, Aux_weight: 0.4000, Main_loss: 0.5812, Aux_loss: 0.8719
+2025-07-25 14:15:28,742 - INFO - Epoch 5/25
+2025-07-25 14:15:28,742 - INFO - Train - Loss: 0.8453, IoU: 0.8160, Dice: 0.8933, F1: 0.8933
+2025-07-25 14:15:28,743 - INFO - Val - Loss: 0.5346, IoU: 0.8520, Dice: 0.9164, F1: 0.9164
+2025-07-25 14:15:28,743 - INFO - Loss Components - Focal: 0.0991, Dice: 0.1212, Iou: 0.2081, Boundary: 0.0000, Aux_focal: 0.1423, Aux_dice: 0.1948, Aux_iou: 0.3150, Aux_weight: 0.3995, Main_loss: 0.5275, Aux_loss: 0.7944
+2025-07-25 14:15:30,984 - INFO - Saved best model with IoU: 0.8520
+2025-07-25 15:00:41,523 - INFO - Epoch 6/25
+2025-07-25 15:00:41,523 - INFO - Train - Loss: 0.7685, IoU: 0.8328, Dice: 0.9043, F1: 0.9043
+2025-07-25 15:00:41,523 - INFO - Val - Loss: 0.4151, IoU: 0.8587, Dice: 0.9209, F1: 0.9209
+2025-07-25 15:00:41,524 - INFO - Loss Components - Focal: 0.0865, Dice: 0.1102, Iou: 0.1910, Boundary: 0.0000, Aux_focal: 0.1265, Aux_dice: 0.1832, Aux_iou: 0.2993, Aux_weight: 0.4000, Main_loss: 0.4743, Aux_loss: 0.7356
+2025-07-25 15:00:43,727 - INFO - Saved best model with IoU: 0.8587
+2025-07-25 15:45:56,758 - INFO - Epoch 7/25
+2025-07-25 15:45:56,758 - INFO - Train - Loss: 0.7371, IoU: 0.8402, Dice: 0.9089, F1: 0.9089
+2025-07-25 15:45:56,758 - INFO - Val - Loss: 0.3639, IoU: 0.8624, Dice: 0.9238, F1: 0.9238
+2025-07-25 15:45:56,758 - INFO - Loss Components - Focal: 0.0836, Dice: 0.1047, Iou: 0.1825, Boundary: 0.0000, Aux_focal: 0.1202, Aux_dice: 0.1763, Aux_iou: 0.2896, Aux_weight: 0.4000, Main_loss: 0.4546, Aux_loss: 0.7062
+2025-07-25 15:45:59,023 - INFO - Saved best model with IoU: 0.8624
+2025-07-25 16:34:41,900 - INFO - Epoch 8/25
+2025-07-25 16:34:41,901 - INFO - Train - Loss: 0.7085, IoU: 0.8429, Dice: 0.9106, F1: 0.9106
+2025-07-25 16:34:41,901 - INFO - Val - Loss: 0.3866, IoU: 0.8634, Dice: 0.9239, F1: 0.9239
+2025-07-25 16:34:41,901 - INFO - Loss Components - Focal: 0.0766, Dice: 0.1019, Iou: 0.1786, Boundary: 0.0000, Aux_focal: 0.1152, Aux_dice: 0.1723, Aux_iou: 0.2842, Aux_weight: 0.3997, Main_loss: 0.4337, Aux_loss: 0.6871
+2025-07-25 16:34:44,138 - INFO - Saved best model with IoU: 0.8634
+2025-07-25 17:21:00,115 - INFO - Epoch 9/25
+2025-07-25 17:21:00,116 - INFO - Train - Loss: 0.6866, IoU: 0.8500, Dice: 0.9150, F1: 0.9150
+2025-07-25 17:21:00,116 - INFO - Val - Loss: 0.3722, IoU: 0.8606, Dice: 0.9225, F1: 0.9225
+2025-07-25 17:21:00,116 - INFO - Loss Components - Focal: 0.0744, Dice: 0.0977, Iou: 0.1715, Boundary: 0.0000, Aux_focal: 0.1133, Aux_dice: 0.1676, Aux_iou: 0.2772, Aux_weight: 0.3998, Main_loss: 0.4181, Aux_loss: 0.6714
+2025-07-25 18:07:04,044 - INFO - Epoch 10/25
+2025-07-25 18:07:04,045 - INFO - Train - Loss: 0.6561, IoU: 0.8538, Dice: 0.9177, F1: 0.9177
+2025-07-25 18:07:04,045 - INFO - Val - Loss: 0.3484, IoU: 0.8665, Dice: 0.9263, F1: 0.9263
+2025-07-25 18:07:04,045 - INFO - Loss Components - Focal: 0.0671, Dice: 0.0946, Iou: 0.1672, Boundary: 0.0000, Aux_focal: 0.1053, Aux_dice: 0.1654, Aux_iou: 0.2744, Aux_weight: 0.3998, Main_loss: 0.3959, Aux_loss: 0.6504
+2025-07-25 18:07:06,246 - INFO - Saved best model with IoU: 0.8665
+2025-07-25 18:52:53,664 - INFO - Epoch 11/25
+2025-07-25 18:52:53,665 - INFO - Train - Loss: 0.6624, IoU: 0.8519, Dice: 0.9160, F1: 0.9160
+2025-07-25 18:52:53,665 - INFO - Val - Loss: 0.3486, IoU: 0.8621, Dice: 0.9233, F1: 0.9233
+2025-07-25 18:52:53,665 - INFO - Loss Components - Focal: 0.0713, Dice: 0.0957, Iou: 0.1682, Boundary: 0.0000, Aux_focal: 0.1057, Aux_dice: 0.1609, Aux_iou: 0.2675, Aux_weight: 0.3997, Main_loss: 0.4064, Aux_loss: 0.6399
+2025-07-25 19:39:04,599 - INFO - Epoch 12/25
+2025-07-25 19:39:04,599 - INFO - Train - Loss: 0.6584, IoU: 0.8543, Dice: 0.9175, F1: 0.9175
+2025-07-25 19:39:04,599 - INFO - Val - Loss: 0.3386, IoU: 0.8691, Dice: 0.9276, F1: 0.9276
+2025-07-25 19:39:04,599 - INFO - Loss Components - Focal: 0.0723, Dice: 0.0947, Iou: 0.1664, Boundary: 0.0000, Aux_focal: 0.1049, Aux_dice: 0.1582, Aux_iou: 0.2633, Aux_weight: 0.4000, Main_loss: 0.4059, Aux_loss: 0.6314
+2025-07-25 19:39:06,775 - INFO - Saved best model with IoU: 0.8691
+2025-07-25 20:25:49,258 - INFO - Epoch 13/25
+2025-07-25 20:25:49,259 - INFO - Train - Loss: 0.6058, IoU: 0.8626, Dice: 0.9226, F1: 0.9226
+2025-07-25 20:25:49,259 - INFO - Val - Loss: 0.3400, IoU: 0.8719, Dice: 0.9288, F1: 0.9288
+2025-07-25 20:25:49,259 - INFO - Loss Components - Focal: 0.0632, Dice: 0.0884, Iou: 0.1564, Boundary: 0.0000, Aux_focal: 0.0944, Aux_dice: 0.1485, Aux_iou: 0.2493, Aux_weight: 0.3998, Main_loss: 0.3712, Aux_loss: 0.5866
+2025-07-25 20:25:51,495 - INFO - Saved best model with IoU: 0.8719
+2025-07-25 21:13:37,714 - INFO - Epoch 14/25
+2025-07-25 21:13:37,714 - INFO - Train - Loss: 0.6009, IoU: 0.8660, Dice: 0.9249, F1: 0.9249
+2025-07-25 21:13:37,714 - INFO - Val - Loss: 0.3394, IoU: 0.8721, Dice: 0.9294, F1: 0.9294
+2025-07-25 21:13:37,714 - INFO - Loss Components - Focal: 0.0655, Dice: 0.0861, Iou: 0.1528, Boundary: 0.0000, Aux_focal: 0.0969, Aux_dice: 0.1425, Aux_iou: 0.2408, Aux_weight: 0.4000, Main_loss: 0.3700, Aux_loss: 0.5771
+2025-07-25 21:13:40,016 - INFO - Saved best model with IoU: 0.8721
+2025-07-25 22:02:17,351 - INFO - Epoch 15/25
+2025-07-25 22:02:17,352 - INFO - Train - Loss: 0.5726, IoU: 0.8701, Dice: 0.9271, F1: 0.9271
+2025-07-25 22:02:17,352 - INFO - Val - Loss: 0.3086, IoU: 0.8769, Dice: 0.9324, F1: 0.9324
+2025-07-25 22:02:17,352 - INFO - Loss Components - Focal: 0.0593, Dice: 0.0833, Iou: 0.1482, Boundary: 0.0000, Aux_focal: 0.0911, Aux_dice: 0.1388, Aux_iou: 0.2352, Aux_weight: 0.3998, Main_loss: 0.3501, Aux_loss: 0.5563
+2025-07-25 22:02:19,500 - INFO - Saved best model with IoU: 0.8769
+2025-07-25 22:54:45,013 - INFO - Epoch 16/25
+2025-07-25 22:54:45,013 - INFO - Train - Loss: 0.5598, IoU: 0.8730, Dice: 0.9286, F1: 0.9286
+2025-07-25 22:54:45,013 - INFO - Val - Loss: 0.3066, IoU: 0.8773, Dice: 0.9327, F1: 0.9327
+2025-07-25 22:54:45,013 - INFO - Loss Components - Focal: 0.0592, Dice: 0.0809, Iou: 0.1441, Boundary: 0.0000, Aux_focal: 0.0892, Aux_dice: 0.1347, Aux_iou: 0.2280, Aux_weight: 0.3997, Main_loss: 0.3433, Aux_loss: 0.5411
+2025-07-25 22:54:47,121 - INFO - Saved best model with IoU: 0.8773
+2025-07-25 23:47:23,853 - INFO - Epoch 17/25
+2025-07-25 23:47:23,854 - INFO - Train - Loss: 0.5501, IoU: 0.8741, Dice: 0.9295, F1: 0.9295
+2025-07-25 23:47:23,854 - INFO - Val - Loss: 0.3190, IoU: 0.8749, Dice: 0.9311, F1: 0.9311
+2025-07-25 23:47:23,854 - INFO - Loss Components - Focal: 0.0564, Dice: 0.0809, Iou: 0.1438, Boundary: 0.0000, Aux_focal: 0.0873, Aux_dice: 0.1322, Aux_iou: 0.2246, Aux_weight: 0.4000, Main_loss: 0.3375, Aux_loss: 0.5315
+2025-07-26 00:39:58,790 - INFO - Epoch 18/25
+2025-07-26 00:39:58,790 - INFO - Train - Loss: 0.5116, IoU: 0.8821, Dice: 0.9347, F1: 0.9347
+2025-07-26 00:39:58,790 - INFO - Val - Loss: 0.3196, IoU: 0.8734, Dice: 0.9303, F1: 0.9303
+2025-07-26 00:39:58,790 - INFO - Loss Components - Focal: 0.0499, Dice: 0.0752, Iou: 0.1353, Boundary: 0.0000, Aux_focal: 0.0813, Aux_dice: 0.1258, Aux_iou: 0.2151, Aux_weight: 0.4000, Main_loss: 0.3103, Aux_loss: 0.5035
+2025-07-26 01:32:02,308 - INFO - Epoch 19/25
+2025-07-26 01:32:02,308 - INFO - Train - Loss: 0.5049, IoU: 0.8834, Dice: 0.9352, F1: 0.9352
+2025-07-26 01:32:02,308 - INFO - Val - Loss: 0.3348, IoU: 0.8711, Dice: 0.9286, F1: 0.9286
+2025-07-26 01:32:02,309 - INFO - Loss Components - Focal: 0.0496, Dice: 0.0737, Iou: 0.1328, Boundary: 0.0000, Aux_focal: 0.0811, Aux_dice: 0.1236, Aux_iou: 0.2119, Aux_weight: 0.3997, Main_loss: 0.3058, Aux_loss: 0.4978
+2025-07-26 02:23:47,185 - INFO - Epoch 20/25
+2025-07-26 02:23:47,185 - INFO - Train - Loss: 0.4938, IoU: 0.8862, Dice: 0.9369, F1: 0.9369
+2025-07-26 02:23:47,185 - INFO - Val - Loss: 0.3029, IoU: 0.8777, Dice: 0.9329, F1: 0.9329
+2025-07-26 02:23:47,185 - INFO - Loss Components - Focal: 0.0480, Dice: 0.0728, Iou: 0.1308, Boundary: 0.0000, Aux_focal: 0.0783, Aux_dice: 0.1214, Aux_iou: 0.2078, Aux_weight: 0.4000, Main_loss: 0.2995, Aux_loss: 0.4858
+2025-07-26 02:23:49,282 - INFO - Saved best model with IoU: 0.8777
+2025-07-26 03:17:05,306 - INFO - Epoch 21/25
+2025-07-26 03:17:05,306 - INFO - Train - Loss: 0.4904, IoU: 0.8856, Dice: 0.9362, F1: 0.9362
+2025-07-26 03:17:05,306 - INFO - Val - Loss: 0.3715, IoU: 0.8680, Dice: 0.9265, F1: 0.9265
+2025-07-26 03:17:05,306 - INFO - Loss Components - Focal: 0.0474, Dice: 0.0725, Iou: 0.1303, Boundary: 0.0000, Aux_focal: 0.0786, Aux_dice: 0.1194, Aux_iou: 0.2051, Aux_weight: 0.3997, Main_loss: 0.2977, Aux_loss: 0.4818
+2025-07-26 04:09:34,479 - INFO - Epoch 22/25
+2025-07-26 04:09:34,479 - INFO - Train - Loss: 0.4753, IoU: 0.8892, Dice: 0.9389, F1: 0.9389
+2025-07-26 04:09:34,479 - INFO - Val - Loss: 0.3242, IoU: 0.8730, Dice: 0.9297, F1: 0.9297
+2025-07-26 04:09:34,479 - INFO - Loss Components - Focal: 0.0463, Dice: 0.0701, Iou: 0.1268, Boundary: 0.0000, Aux_focal: 0.0746, Aux_dice: 0.1154, Aux_iou: 0.1996, Aux_weight: 0.3998, Main_loss: 0.2896, Aux_loss: 0.4643
+2025-07-26 05:01:08,140 - INFO - Epoch 23/25
+2025-07-26 05:01:08,140 - INFO - Train - Loss: 0.4591, IoU: 0.8928, Dice: 0.9411, F1: 0.9411
+2025-07-26 05:01:08,140 - INFO - Val - Loss: 0.2884, IoU: 0.8815, Dice: 0.9353, F1: 0.9353
+2025-07-26 05:01:08,140 - INFO - Loss Components - Focal: 0.0432, Dice: 0.0680, Iou: 0.1233, Boundary: 0.0000, Aux_focal: 0.0724, Aux_dice: 0.1130, Aux_iou: 0.1956, Aux_weight: 0.4000, Main_loss: 0.2777, Aux_loss: 0.4534
+2025-07-26 05:01:10,314 - INFO - Saved best model with IoU: 0.8815
+2025-07-26 05:53:57,594 - INFO - Epoch 24/25
+2025-07-26 05:53:57,595 - INFO - Train - Loss: 0.4568, IoU: 0.8921, Dice: 0.9407, F1: 0.9407
+2025-07-26 05:53:57,595 - INFO - Val - Loss: 0.3023, IoU: 0.8787, Dice: 0.9333, F1: 0.9333
+2025-07-26 05:53:57,595 - INFO - Loss Components - Focal: 0.0439, Dice: 0.0679, Iou: 0.1234, Boundary: 0.0000, Aux_focal: 0.0713, Aux_dice: 0.1101, Aux_iou: 0.1912, Aux_weight: 0.3998, Main_loss: 0.2792, Aux_loss: 0.4439
+2025-07-26 06:46:50,975 - INFO - Epoch 25/25
+2025-07-26 06:46:50,975 - INFO - Train - Loss: 0.4662, IoU: 0.8910, Dice: 0.9400, F1: 0.9400
+2025-07-26 06:46:50,975 - INFO - Val - Loss: 0.3076, IoU: 0.8780, Dice: 0.9330, F1: 0.9330
+2025-07-26 06:46:50,976 - INFO - Loss Components - Focal: 0.0457, Dice: 0.0688, Iou: 0.1245, Boundary: 0.0000, Aux_focal: 0.0750, Aux_dice: 0.1112, Aux_iou: 0.1928, Aux_weight: 0.4000, Main_loss: 0.2846, Aux_loss: 0.4541

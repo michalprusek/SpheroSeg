@@ -1,0 +1,45 @@
+2025-08-24 11:26:29,079 - INFO - ============================================================
+2025-08-24 11:26:29,079 - INFO - COMPLETE DATASET SUMMARY
+2025-08-24 11:26:29,080 - INFO - ============================================================
+2025-08-24 11:26:29,080 - INFO - Train samples: 19,491
+2025-08-24 11:26:29,080 - INFO - Val samples:   2,539
+2025-08-24 11:26:29,080 - INFO - Test samples:  653
+2025-08-24 11:26:29,080 - INFO - Total samples: 22,683
+2025-08-24 11:26:29,080 - INFO - ============================================================
+2025-08-24 13:25:05,819 - INFO - Epoch 1/75
+2025-08-24 13:25:05,820 - INFO - Train - Loss: 0.1659, IoU: 0.9015, Dice: 0.9322, F1: 0.9322
+2025-08-24 13:25:05,820 - INFO - Val - Loss: 0.1354, IoU: 0.9143, Dice: 0.9519, F1: 0.9519
+2025-08-24 13:25:05,820 - INFO - Loss Components - Focal: 0.0330, Dice: 0.0762, Iou: 0.1132, Boundary: 0.0000
+2025-08-24 13:25:06,300 - INFO - Saved best model with IoU: 0.9143
+2025-08-24 15:28:57,812 - INFO - Epoch 2/75
+2025-08-24 15:28:57,812 - INFO - Train - Loss: 0.1593, IoU: 0.9033, Dice: 0.9339, F1: 0.9339
+2025-08-24 15:28:57,812 - INFO - Val - Loss: 0.1370, IoU: 0.9124, Dice: 0.9509, F1: 0.9509
+2025-08-24 15:28:57,812 - INFO - Loss Components - Focal: 0.0283, Dice: 0.0751, Iou: 0.1118, Boundary: 0.0000
+2025-08-24 17:29:17,108 - INFO - Epoch 3/75
+2025-08-24 17:29:17,109 - INFO - Train - Loss: 0.1566, IoU: 0.9048, Dice: 0.9348, F1: 0.9348
+2025-08-24 17:29:17,109 - INFO - Val - Loss: 0.1351, IoU: 0.9148, Dice: 0.9523, F1: 0.9523
+2025-08-24 17:29:17,109 - INFO - Loss Components - Focal: 0.0278, Dice: 0.0739, Iou: 0.1099, Boundary: 0.0000
+2025-08-24 17:29:17,355 - INFO - Saved best model with IoU: 0.9148
+2025-08-24 19:29:04,183 - INFO - Epoch 4/75
+2025-08-24 19:29:04,184 - INFO - Train - Loss: 0.1614, IoU: 0.9032, Dice: 0.9334, F1: 0.9334
+2025-08-24 19:29:04,184 - INFO - Val - Loss: 0.1351, IoU: 0.9146, Dice: 0.9522, F1: 0.9522
+2025-08-24 19:29:04,184 - INFO - Loss Components - Focal: 0.0298, Dice: 0.0756, Iou: 0.1119, Boundary: 0.0000
+2025-08-24 21:31:55,334 - INFO - Epoch 5/75
+2025-08-24 21:31:55,335 - INFO - Train - Loss: 0.1537, IoU: 0.9056, Dice: 0.9352, F1: 0.9352
+2025-08-24 21:31:55,335 - INFO - Val - Loss: 0.1370, IoU: 0.9133, Dice: 0.9515, F1: 0.9515
+2025-08-24 21:31:55,335 - INFO - Loss Components - Focal: 0.0256, Dice: 0.0736, Iou: 0.1091, Boundary: 0.0000
+2025-08-24 23:34:22,968 - INFO - Epoch 6/75
+2025-08-24 23:34:22,969 - INFO - Train - Loss: 0.1577, IoU: 0.9047, Dice: 0.9348, F1: 0.9348
+2025-08-24 23:34:22,969 - INFO - Val - Loss: 0.1347, IoU: 0.9144, Dice: 0.9521, F1: 0.9521
+2025-08-24 23:34:22,969 - INFO - Loss Components - Focal: 0.0287, Dice: 0.0741, Iou: 0.1101, Boundary: 0.0000
+2025-08-25 01:33:52,185 - INFO - Epoch 7/75
+2025-08-25 01:33:52,186 - INFO - Train - Loss: 0.1530, IoU: 0.9069, Dice: 0.9361, F1: 0.9361
+2025-08-25 01:33:52,186 - INFO - Val - Loss: 0.1347, IoU: 0.9148, Dice: 0.9523, F1: 0.9523
+2025-08-25 01:33:52,186 - INFO - Loss Components - Focal: 0.0263, Dice: 0.0728, Iou: 0.1079, Boundary: 0.0000
+2025-08-25 01:33:52,534 - INFO - Saved best model with IoU: 0.9148
+2025-08-25 03:41:20,038 - INFO - Epoch 8/75
+2025-08-25 03:41:20,039 - INFO - Train - Loss: 0.1516, IoU: 0.9075, Dice: 0.9367, F1: 0.9367
+2025-08-25 03:41:20,039 - INFO - Val - Loss: 0.1358, IoU: 0.9141, Dice: 0.9519, F1: 0.9519
+2025-08-25 03:41:20,039 - INFO - Loss Components - Focal: 0.0254, Dice: 0.0724, Iou: 0.1077, Boundary: 0.0000
+2025-08-25 03:41:20,047 - INFO - Early stopping triggered after 8 epochs
+2025-08-25 03:41:20,047 - INFO - Best model was from epoch 3 with IoU: 0.9148
