@@ -357,8 +357,9 @@ If you use this code in your research, please cite:
 ## 📧 Contact
 
 For questions and collaborations:
-- Michal Průšek - [GitHub Issues](https://github.com/michalprusek/SpheroSeg/issues)
-- Create an issue for bug reports or feature requests
+- **Michal Průšek** (Main Author) - prusemic@cvut.cz
+- **Adam Novozámský** (Computer Science Lead) - novozamsky@utia.cas.cz
+- For bug reports or feature requests, please create a [GitHub Issue](https://github.com/michalprusek/SpheroSeg/issues)
 
 ## 📄 License
 
