@@ -13,7 +13,6 @@ State-of-the-art deep learning models for tumor spheroid segmentation in microsc
 - **8 Different Architectures**: MA-ResUNet, CBAM-ResUNet, LC-ResUNet, HRNet, PSPNet, UNet, LightM-UNet
 - **Two-Stage Training Strategy**: Pre-training on mixed dataset (SpheroMix) + fine-tuning on high-quality data (SpheroHQ)
 - **Comprehensive Evaluation**: Statistical significance testing, cross-dataset validation
-- **Production Ready**: Fast inference (27ms with HRNet), TTA support, robust data pipeline
 
 ## 📊 Performance Summary
 
@@ -29,9 +28,9 @@ State-of-the-art deep learning models for tumor spheroid segmentation in microsc
 ```
 SpheroSeg/
 ├── models/                      # Model architectures
-│   ├── resunet_ma.py           # MA-ResUNet with multi-attention
+│   ├── resunet_ma.py           # MA-ResUNet (multi-attention)
 │   ├── resunet_cbam.py         # CBAM-ResUNet
-│   ├── resunet_lc.py           # LC-ResUNet (lightweight)
+│   ├── resunet_lc.py           # LC-ResUNet (lightweight CBAM)
 │   ├── resunet_ma_mini.py      # Mini MA-ResUNet variant
 │   ├── hrnet.py                # High-Resolution Network
 │   ├── pspnet.py               # Pyramid Scene Parsing Network
@@ -207,15 +206,6 @@ python src/evaluation/evaluate_models_server.py \
     --fair-comparison  # Ensures identical evaluation conditions
 ```
 
-### Evaluation with TTA
-
-```bash
-python src/evaluation/evaluate_models_server.py \
-    --dataset-path /path/to/test/dataset \
-    --model-path outputs/best_model.pth \
-    --use-tta  # 8-fold test-time augmentation
-```
-
 ### Statistical Analysis
 
 ```bash
@@ -248,8 +238,7 @@ python src/inference/inference.py \
     --model-path outputs/best_model.pth \
     --model-type hrnet \
     --input-dir /path/to/images/ \
-    --output-dir /path/to/predictions/ \
-    --use-tta  # Optional: enable TTA for better accuracy
+    --output-dir /path/to/predictions/
 ```
 
 ### Inference with Uncertainty Estimation
@@ -261,7 +250,6 @@ python src/inference/inference.py \
     --input-dir /path/to/images/ \
     --output-dir /path/to/predictions/ \
     --use-tta \
-    --save-uncertainty  # Saves uncertainty maps
 ```
 
 ## 🛠️ Model Selection Guide
@@ -340,19 +328,7 @@ python scripts/visualize_results.py \
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## 📄 Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@article{spheroseg2025,
-  title={SpheroSeg: Deep Learning Models for Tumor Spheroid Segmentation},
-  author={Průšek, Michal and others},
-  journal={Medical Image Analysis},
-  year={2025}
-}
-```
+6. 
 
 ## 📧 Contact
 
