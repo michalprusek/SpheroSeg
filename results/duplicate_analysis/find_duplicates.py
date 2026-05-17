@@ -77,7 +77,12 @@ def analyze_duplicates(duplicates):
     }
 
 def main():
-    directory = "/Volumes/T7/SpheroSeg_upload/SpheroMix/train/images"
+    import argparse
+    ap = argparse.ArgumentParser(description="Find duplicate image files by MD5")
+    ap.add_argument("--directory", required=True,
+                    help="Image directory to scan recursively")
+    args = ap.parse_args()
+    directory = args.directory
 
     print(f"Analyzing duplicates in: {directory}")
     print("-" * 80)

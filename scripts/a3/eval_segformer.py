@@ -4,8 +4,9 @@ Evaluate SegFormer (HF transformers) checkpoint on SpheroMix test or HTS-Seg.
 Same metric format/output as evaluate_a3.py — drop-in for A1 summary.
 
 Usage:
-  python eval_segformer.py --weights .../best.pth --pretrained nvidia/segformer-b0-finetuned-ade-512-512 \
-      --dataset /disk1/prusek/SpheroSeg/data/SpheroMix --output out.json
+  python eval_segformer.py --weights .../best.pth \
+      --pretrained nvidia/segformer-b0-finetuned-ade-512-512 \
+      --dataset $SPHEROMIX_PATH --output out.json
 """
 import argparse, json, os, sys
 from pathlib import Path
@@ -18,11 +19,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "src" / "training"))
 
-from CNN_main_spheroid import CachedSpheroidDataset
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
-from torch.utils.data import DataLoader
-from transformers import SegformerForSemanticSegmentation
+# Heavy imports (CNN_main_spheroid, albumentations, transformers) are deferred
+# to main() so that --help works without those packages installed.
 
 
 def per_image_metrics(pred_mask, gt_mask):
@@ -60,6 +58,12 @@ def main():
     a = p.parse_args()
     if not a.dataset:
         p.error("--dataset is required (or set SPHEROMIX_PATH env var)")
+
+    from CNN_main_spheroid import CachedSpheroidDataset
+    import albumentations as A
+    from albumentations.pytorch import ToTensorV2
+    from torch.utils.data import DataLoader
+    from transformers import SegformerForSemanticSegmentation
 
     # Load model
     print(f"[eval] loading SegFormer pretrained={a.pretrained}")

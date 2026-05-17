@@ -1,27 +1,28 @@
 """
 Build a CVAT-uploadable package from Sauvola DTS pre-annotations.
 
-Output:
-  cvat_dts_sauvola_150/
-    images/         — 150 random DTS images (seed=42)
-    annotations.xml — CVAT for Images 1.1 with polygons (one per spheroid)
-    labels.txt      — label list
+Output (under --out-dir):
+  images/         — N random DTS images (seed=42)
+  annotations.xml — CVAT for Images 1.1 with polygons (one per spheroid)
+  labels.txt      — label list
 
 Upload instructions: in CVAT, create a task with images/ contents,
 then 'Upload annotations' → 'CVAT 1.1' → annotations.xml.
+
+Usage:
+    python scripts/a3/build_cvat_package.py \
+        --dts-test-dir   $SPHEROMIX_PATH/test/images \
+        --sauvola-dir    path/to/sauvola_dts_preannot \
+        --out-dir        path/to/cvat_dts_sauvola_150 \
+        [--n 150] [--seed 42]
 """
-import os, random, shutil, sys, xml.etree.ElementTree as ET
+import argparse, os, random, shutil, sys, xml.etree.ElementTree as ET
 from pathlib import Path
 import numpy as np
 import cv2 as cv
 from PIL import Image
 from xml.dom import minidom
 
-DTS_TEST_DIR = Path("/disk1/prusek/SpheroSeg/data/SpheroMix/test/images")
-SAUVOLA_DIR = Path("/disk1/prusek/SpheroSeg/eval_a3/sauvola_dts_preannot")
-OUT_DIR = Path("/disk1/prusek/SpheroSeg/eval_a3/cvat_dts_sauvola_150")
-SEED = 42
-N = 150
 LABEL = "spheroid"
 # polygon simplification — fewer points = lighter CVAT, but worse fidelity
 APPROX_EPS_FRAC = 0.001  # 0.1% of contour perimeter; CVAT handles ~50-200 pt polygons fine
@@ -92,31 +93,48 @@ def prettify(elem):
 
 
 def main():
-    if OUT_DIR.exists():
-        shutil.rmtree(OUT_DIR)
-    (OUT_DIR / "images").mkdir(parents=True)
+    ap = argparse.ArgumentParser(description="Build CVAT package from Sauvola DTS pre-annotations")
+    ap.add_argument("--dts-test-dir", type=Path, default=None,
+                    help="Directory of DTS test images (default: $SPHEROMIX_PATH/test/images)")
+    ap.add_argument("--sauvola-dir",  type=Path, required=True,
+                    help="Output of generate_sauvola_dts.py (must contain masks/ subdir)")
+    ap.add_argument("--out-dir",      type=Path, required=True,
+                    help="Where to write the CVAT package")
+    ap.add_argument("--n",            type=int, default=150,
+                    help="Number of images to sample (default: 150)")
+    ap.add_argument("--seed",         type=int, default=42)
+    args = ap.parse_args()
+
+    if args.dts_test_dir is None:
+        sm = os.environ.get("SPHEROMIX_PATH")
+        if not sm:
+            ap.error("--dts-test-dir required (or set SPHEROMIX_PATH)")
+        args.dts_test_dir = Path(sm) / "test" / "images"
+
+    if args.out_dir.exists():
+        shutil.rmtree(args.out_dir)
+    (args.out_dir / "images").mkdir(parents=True)
 
     # 1) random sample
-    all_dts = sorted([f for f in os.listdir(DTS_TEST_DIR) if is_dts(f)])
-    rng = random.Random(SEED)
-    sample = sorted(rng.sample(all_dts, N))
-    print(f"sampled {len(sample)} of {len(all_dts)} DTS images (seed={SEED})")
+    all_dts = sorted([f for f in os.listdir(args.dts_test_dir) if is_dts(f)])
+    rng = random.Random(args.seed)
+    sample = sorted(rng.sample(all_dts, args.n))
+    print(f"sampled {len(sample)} of {len(all_dts)} DTS images (seed={args.seed})")
 
     # 2) copy images + build polygons
     records = []
     for fn in sample:
-        src_img = DTS_TEST_DIR / fn
-        dst_img = OUT_DIR / "images" / fn
+        src_img = args.dts_test_dir / fn
+        dst_img = args.out_dir / "images" / fn
         shutil.copy2(src_img, dst_img)
 
-        mask_path = SAUVOLA_DIR / "masks" / fn
+        mask_path = args.sauvola_dir / "masks" / fn
         if not mask_path.exists():
             print(f"  WARN: no mask for {fn}", file=sys.stderr)
             polys = []
         else:
             polys = mask_to_polygons(mask_path)
 
-        # get image dims
         with Image.open(src_img) as im:
             w, h = im.size
 
@@ -125,18 +143,15 @@ def main():
     # 3) write annotations.xml
     xml_root = build_xml(records)
     xml_bytes = prettify(xml_root)
-    (OUT_DIR / "annotations.xml").write_bytes(xml_bytes)
+    (args.out_dir / "annotations.xml").write_bytes(xml_bytes)
+    (args.out_dir / "labels.txt").write_text(f"{LABEL}\n")
 
-    # 4) labels.txt
-    (OUT_DIR / "labels.txt").write_text(f"{LABEL}\n")
-
-    # 5) sample manifest
     n_polys = sum(len(r["polygons"]) for r in records)
     avg_pts = sum(sum(len(p) for p in r["polygons"]) for r in records) / max(1, n_polys)
     print(f"\ntotal images: {len(records)}")
     print(f"total polygons: {n_polys}  (avg {n_polys/len(records):.1f} per image)")
     print(f"avg points per polygon: {avg_pts:.1f}")
-    print(f"output: {OUT_DIR}")
+    print(f"output: {args.out_dir}")
     print(f"  images/        ({len(records)} files)")
     print(f"  annotations.xml ({len(xml_bytes)/1024:.1f} KB)")
     print(f"  labels.txt")

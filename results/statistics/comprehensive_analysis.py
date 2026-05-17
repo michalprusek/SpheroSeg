@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """
 Comprehensive Statistical and TOPSIS Analysis for SpheroSeg Models
-Combines all statistical tests and TOPSIS analysis into a unified pipeline
+Combines all statistical tests and TOPSIS analysis into a unified pipeline.
+
+Usage:
+    python results/statistics/comprehensive_analysis.py [--data PATH]
 """
+
+import argparse
+from pathlib import Path
+import warnings
 
 import pandas as pd
 import numpy as np
@@ -11,16 +18,22 @@ from scipy.stats import wilcoxon, mannwhitneyu, friedmanchisquare, levene
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
-from pathlib import Path
-import warnings
 warnings.filterwarnings('ignore')
+
+# Default location of the merged per-image results bundled with this repo.
+DEFAULT_DATA = (Path(__file__).resolve().parents[1]
+                / "evaluation_results_20250829_120800"
+                / "Merged_DTS_SpheroSeg_results"
+                / "Merged_DTS_SpheroSeg_detailed_results.csv")
 
 
 class ComprehensiveAnalysis:
     """Unified analysis combining statistical tests and TOPSIS evaluation"""
-    
-    def __init__(self, data_path='/Users/michalprusek/Desktop/spheroseg_models/evaluation_results_20250829_120800/Merged_DTS_SpheroSeg_results/Merged_DTS_SpheroSeg_detailed_results.csv'):
-        """Initialize with data loading and preprocessing"""
+
+    def __init__(self, data_path=None):
+        """Initialize with data loading and preprocessing."""
+        if data_path is None:
+            data_path = DEFAULT_DATA
         self.df = pd.read_csv(data_path)
         self.prepare_data()
         self.setup_model_info()
@@ -654,8 +667,11 @@ def main():
     print("║" + " COMPREHENSIVE ANALYSIS FOR SPHEROSEG MODELS ".center(78) + "║")
     print("╚" + "═"*78 + "╝")
     
-    # Initialize analyzer
-    analyzer = ComprehensiveAnalysis()
+    ap = argparse.ArgumentParser(description="SpheroSeg comprehensive analysis")
+    ap.add_argument("--data", type=Path, default=None,
+                    help=f"CSV with per-image IoU/Dice/Inference_Time_ms (default: {DEFAULT_DATA})")
+    args, _ = ap.parse_known_args()
+    analyzer = ComprehensiveAnalysis(args.data)
     
     # Run analyses and save results
     statistical_tests, topsis_results = analyzer.save_all_results()

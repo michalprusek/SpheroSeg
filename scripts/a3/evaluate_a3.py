@@ -24,10 +24,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "src" / "training"))
 
-# Reuse dataset class from the training script
-from CNN_main_spheroid import CachedSpheroidDataset
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
+# Heavy imports (CNN_main_spheroid, albumentations) are deferred to evaluate()
+# so that --help works without torch/albumentations fully importable.
 
 CTORS = {
     "unet":            lambda: __import__('models.unet', fromlist=['UNet']).UNet(in_channels=3, out_channels=1, use_instance_norm=True),
@@ -70,6 +68,10 @@ def is_hq_test(filename: str) -> bool:
     return 'bxpc' in filename.lower() or 'bxpc-3' in filename.lower()
 
 def evaluate(weights_path, model_key, dataset_path, device='cuda:0', batch_size=4, num_workers=4):
+    from CNN_main_spheroid import CachedSpheroidDataset
+    import albumentations as A
+    from albumentations.pytorch import ToTensorV2
+
     print(f"[eval] weights={weights_path} model={model_key}")
     ckpt = torch.load(weights_path, map_location='cpu', weights_only=False)
     sd = ckpt.get('model_state_dict', ckpt) if isinstance(ckpt, dict) else ckpt

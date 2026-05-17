@@ -4,12 +4,16 @@ Inference script for spheroid segmentation models.
 Supports single image or batch processing from folders.
 
 Usage:
-    python inference.py --model resunet_ma --weights /path/to/weights.pth --input /path/to/image_or_folder --output /path/to/output_folder
-    
-Default paths:
-    - Weights: /Volumes/T7/SpheroSeg_upload/weights
-    - Models: /Users/michalprusek/Desktop/spheroseg_models/models
-    - Input: /Users/michalprusek/Desktop/spheroseg_models/DATASETS/DTS/images
+    python inference.py \
+        --model resunet_cbam \
+        --weights /path/to/best_model.pth \
+        --input /path/to/image_or_folder \
+        --output /path/to/output_folder
+
+Inputs may be a single image file or a directory; output is always a directory.
+For batch evaluation against ground-truth masks, use
+`scripts/a3/evaluate_a3.py` instead — this script is for production inference
+only and does not compute IoU.
 """
 
 import os
@@ -33,9 +37,8 @@ from tqdm import tqdm
 import time
 from datetime import datetime
 
-# Add model path to system path
-DEFAULT_MODEL_PATH = '/Users/michalprusek/Desktop/spheroseg_models/models'
-sys.path.insert(0, str(Path(DEFAULT_MODEL_PATH).parent))
+# Make `models/` package importable when running this file directly from any cwd.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 # Import all model architectures
 from models.resunet_ma import AdvancedResUNet
@@ -375,13 +378,11 @@ def main():
                         choices=list(MODEL_REGISTRY.keys()),
                         help='Model architecture to use')
     
-    parser.add_argument('--weights', type=str, 
-                        default='/Volumes/T7/SpheroSeg_upload/weights',
-                        help='Path to model weights file or directory containing weights')
-    
+    parser.add_argument('--weights', type=str, required=True,
+                        help='Path to model weights (.pth) or directory containing one')
+
     # Input/Output arguments
-    parser.add_argument('--input', type=str,
-                        default='/Users/michalprusek/Desktop/spheroseg_models/DATASETS/DTS/images',
+    parser.add_argument('--input', type=str, required=True,
                         help='Path to input image or folder of images')
     
     parser.add_argument('--output', type=str, required=True,

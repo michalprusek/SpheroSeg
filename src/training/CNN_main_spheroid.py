@@ -685,7 +685,7 @@ def validate_epoch(model, val_loader, criterion, device, epoch, writer, rank=0, 
                 preds = apply_tta(model, images, device)
                 # For TTA, we already have probabilities, calculate loss directly
                 # Avoid double sigmoid by using BCELoss instead of BCEWithLogitsLoss component
-                with torch.cuda.amp.autocast():
+                with torch.amp.autocast('cuda'):
                     outputs, loss, _ = handle_model_output(model, images, criterion, masks, aux_weight)
             else:
                 outputs, loss, _ = handle_model_output(model, images, criterion, masks, aux_weight)
@@ -1317,7 +1317,17 @@ def train(rank, world_size, args):
             optimizer = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
         elif args.optimizer == 'sgd':
             optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
-    
+
+        # Rebind scheduler to the new optimizer — the original was created above
+        # against an optimizer that has now been discarded, so scheduler.step()
+        # would silently update no-op LR state or raise.
+        if args.scheduler == 'reduce':
+            scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=5)
+        elif args.scheduler == 'cosine':
+            scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2, eta_min=1e-6)
+        elif args.scheduler == 'onecycle':
+            scheduler = OneCycleLR(optimizer, max_lr=args.lr, steps_per_epoch=len(train_loader), epochs=args.epochs)
+
     # Early stopping
     early_stopping = EarlyStopping(patience=args.patience, min_delta=args.min_delta, mode='max', verbose=True)
     

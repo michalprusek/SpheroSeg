@@ -77,30 +77,20 @@ SpheroSeg/
 │   │   ├── train_segformer.py       # SegFormer fair-protocol trainer (Table 8)
 │   │   ├── eval_segformer.py        # SegFormer evaluator
 │   │   ├── iaa_analysis.py          # DTS-150 IAA pilot (§5.5.1)
-│   │   ├── generate_sauvola_dts.py  # Sauvola pre-annotation for CVAT
-│   │   ├── build_cvat_package.py    # CVAT task package builder
-│   │   ├── prepare_htsseg_eval.py   # HTS-Seg n=96 eval set prep
-│   │   ├── prepare_htsseg_tiles.py  # HTS-Seg patch-tiled variant
-│   │   ├── batch_eval_a3.sh         # Batch evaluate all A3 checkpoints
-│   │   ├── batch_eval_htsseg.sh     # Batch evaluate on HTS-Seg
-│   │   ├── batch_eval_segformer.sh  # Batch evaluate SegFormer checkpoints
-│   │   ├── batch_eval_full_roster.sh
-│   │   ├── eval_round2.sh           # Round-2 retraining evaluation
-│   │   ├── chain_a{100,5000}_*.sh   # Cluster chain runners (UTIA-specific)
-│   │   ├── recovery_a100_chain.sh
-│   │   ├── health_check.sh
-│   │   ├── post_upload_pipeline.sh
-│   │   └── run_all_4.sh
-│   └── training/                    # Legacy pre-A3 launchers (kept for archive)
-│       ├── pretrain_*.sh
-│       └── finetune_*.sh
+│       ├── generate_sauvola_dts.py  # Sauvola pre-annotation for CVAT
+│       ├── build_cvat_package.py    # CVAT task package builder
+│       ├── prepare_htsseg_eval.py   # HTS-Seg n=96 eval set prep
+│       ├── prepare_htsseg_tiles.py  # HTS-Seg patch-tiled variant
+│       └── utia_cluster/            # UTIA-cluster orchestration (archive only)
+│           └── *.sh                 # batch_eval_*, chain_*, run_all_4, …
 │
 ├── results/                         # Aggregated per-model results from manuscript
 │   ├── evaluation_results_*/
 │   ├── statistics/                  # TOPSIS, Friedman/Nemenyi, failure analysis
 │   └── app/                         # Web-app inference timing
 │
-├── model_details/                   # Per-architecture configs + training logs
+├── model_details/                   # Pre-A3 training configs + logs (archive)
+│   ├── README.md                    # explains why this differs from A3
 │   └── {model}_{pretrained,finetuned}/
 │
 ├── paper/                           # LaTeX source + bibliography
@@ -223,6 +213,14 @@ done
 
 LightM-UNet was dropped from the published manuscript but the architecture file
 and launcher entry remain available for ablation.
+
+### UTIA-cluster orchestration (archive)
+
+Shell scripts under `scripts/a3/utia_cluster/` document the exact orchestration
+used to produce the manuscript's runs on the UTIA tulen cluster (A100 + RTX
+A5000). They contain hard-coded UTIA paths and are not designed for external
+reuse — see `scripts/a3/utia_cluster/README.md` for the inventory. External
+users should invoke `run_a3_launcher.py` directly as shown above.
 
 ---
 

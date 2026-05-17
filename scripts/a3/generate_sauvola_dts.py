@@ -13,8 +13,8 @@ from pathlib import Path
 import numpy as np
 import cv2 as cv
 from PIL import Image
-from prusek_spheroid.methods import BaseImageProcessing as Methods
-from prusek_spheroid import image_processing as ip
+# `prusek_spheroid` is an optional dep imported lazily inside run_sauvola()
+# so that --help and test imports work without it installed.
 
 # prusek-spheroid GradientDescentGUI seed defaults — same starting point as
 # what was used for SpheroHQ pre-annotation in the GUI workflow.
@@ -26,9 +26,6 @@ DEFAULT_PARAMS = {
     "dilation_size": 2,
 }
 
-DTS_TEST_DIR = Path("/disk1/prusek/SpheroSeg/data/SpheroMix/test/images")
-
-
 def is_dts(filename: str) -> bool:
     """DTS images are numerically named (1.png, 100.png); BxPC-3 are bxpc-3_*.png"""
     return not filename.startswith("bxpc-3_")
@@ -36,6 +33,8 @@ def is_dts(filename: str) -> bool:
 
 def run_sauvola(img_path: Path, params: dict) -> np.ndarray:
     """Load image, run prusek-spheroid Sauvola pipeline, return binary mask uint8 (0/255)."""
+    from prusek_spheroid.methods import BaseImageProcessing as Methods
+
     img = Image.open(img_path)
     if img.mode != "L":
         img = img.convert("L")
@@ -50,11 +49,21 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--params", type=str, default=None,
                     help="Optional JSON file with Sauvola params; defaults to prusek-spheroid GUI seed")
-    ap.add_argument("--out", type=str,
-                    default="/disk1/prusek/SpheroSeg/eval_a3/sauvola_dts_preannot")
+    ap.add_argument("--input-dir", type=Path, default=None,
+                    help="Directory of DTS images (default: $SPHEROMIX_PATH/test/images)")
+    ap.add_argument("--out", type=Path, required=True,
+                    help="Output directory for masks + overlays + manifest")
     ap.add_argument("--limit", type=int, default=None,
                     help="Process only first N DTS images (for testing)")
     a = ap.parse_args()
+
+    if a.input_dir is None:
+        spheromix = os.environ.get("SPHEROMIX_PATH")
+        if not spheromix:
+            ap.error("--input-dir required (or set SPHEROMIX_PATH and we use $SPHEROMIX_PATH/test/images)")
+        a.input_dir = Path(spheromix) / "test" / "images"
+    if not a.input_dir.exists():
+        ap.error(f"input dir does not exist: {a.input_dir}")
 
     if a.params:
         with open(a.params) as f:
@@ -73,7 +82,7 @@ def main():
     with open(out_dir / "params.json", "w") as f:
         json.dump(params, f, indent=2)
 
-    dts_images = sorted([f for f in os.listdir(DTS_TEST_DIR) if is_dts(f)])
+    dts_images = sorted([f for f in os.listdir(a.input_dir) if is_dts(f)])
     if a.limit:
         dts_images = dts_images[:a.limit]
     print(f"DTS images to process: {len(dts_images)}")
@@ -82,7 +91,7 @@ def main():
 
     manifest = []
     for i, fn in enumerate(dts_images):
-        img_path = DTS_TEST_DIR / fn
+        img_path = a.input_dir / fn
         try:
             mask = run_sauvola(img_path, params)
             n_fg = int((mask > 0).sum())
