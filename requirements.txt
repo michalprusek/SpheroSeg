@@ -1,4 +1,4 @@
-# Core dependencies
+# Core deep-learning stack
 torch>=2.0.0
 torchvision>=0.15.0
 numpy>=1.24.0
@@ -7,6 +7,17 @@ Pillow>=10.0.0
 
 # Data augmentation and preprocessing
 albumentations>=1.3.0
+einops>=0.7.0          # required by models/lightm_unet.py (Mamba-style ops)
+
+# SegFormer baseline (scripts/a3/train_segformer.py, eval_segformer.py)
+transformers>=4.35.0
+
+# Evaluation, statistics, and inter-annotator agreement
+scikit-learn>=1.3.0
+scipy>=1.11.0
+pandas>=2.0.0
+pycocotools>=2.0.7     # IAA pipeline: COCO-JSON → binary masks
+SimpleITK>=2.3.0       # IAA pipeline: STAPLE consensus
 
 # Visualization and monitoring
 matplotlib>=3.7.0
@@ -14,12 +25,13 @@ seaborn>=0.12.0
 tensorboard>=2.13.0
 tqdm>=4.65.0
 
-# Scientific computing
-scikit-learn>=1.3.0
-scipy>=1.11.0
+# Optional — classical baseline (Sauvola pre-annotation used to seed IAA pilot).
+# Install from PyPI if reproducing IAA Sauvola pre-annotations:
+#   pip install prusek-spheroid
 
-# Optional for Mamba models (if available)
-# mamba-ssm>=1.0.0  # Uncomment if using Mamba models
+# Optional Mamba models — uncomment if using LightM-UNet (dropped from the
+# published manuscript but architecture file remains in models/ for reference)
+# mamba-ssm>=1.0.0
 
 # Development tools (optional)
 jupyter>=1.0.0

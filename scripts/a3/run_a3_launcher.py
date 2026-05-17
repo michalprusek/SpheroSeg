@@ -35,16 +35,17 @@ IOU_W     = 0.5
 BOUNDARY_W= 0.0
 AUX_W     = 0.0
 
-# Stage-specific
+# Stage-specific. Dataset paths are taken from env vars at module load
+# (overridable per stage by --spheromix-path / --spherohq-path CLI flags).
 STAGE_CFG = {
     "pretrain": {
-        "dataset": "/disk1/prusek/SpheroSeg/data/SpheroMix",
+        "dataset": os.environ.get("SPHEROMIX_PATH", ""),
         "lr": 2e-4,
         "freeze_backbone_epochs": 0,
         "out_tag": "pretrained",
     },
     "finetune": {
-        "dataset": "/disk1/prusek/SpheroSeg/data/SpheroHQ",
+        "dataset": os.environ.get("SPHEROHQ_PATH", ""),
         "lr": 1e-5,
         "freeze_backbone_epochs": 10,    # standardized; originals were 4–15
         "out_tag": "finetuned",
@@ -64,8 +65,9 @@ MICRO_DEFAULT = {
 for _m, _cfg in MICRO_DEFAULT.items():
     assert _cfg["bs"] * _cfg["ga"] == EFFECTIVE_BATCH, _m
 
-OUTPUT_ROOT = "/disk1/prusek/SpheroSeg/checkpoints"
-LOG_ROOT    = "/disk1/prusek/SpheroSeg/logs"
+REPO_ROOT   = Path(__file__).resolve().parents[2]
+OUTPUT_ROOT = os.environ.get("SPHEROSEG_OUTPUT_ROOT", str(REPO_ROOT / "checkpoints"))
+LOG_ROOT    = os.environ.get("SPHEROSEG_LOG_ROOT",    str(REPO_ROOT / "logs"))
 
 
 def set_seeds(seed: int) -> None:
@@ -111,11 +113,24 @@ def main():
     parser.add_argument("--pretrained-path", default=None,
                         help="Required for --stage finetune; if omitted, auto-discovered "
                              "from {model}_a3_pretrained_seed42[_suffix]/best_model.pth")
+    parser.add_argument("--spheromix-path", default=None,
+                        help="SpheroMix dataset root (overrides $SPHEROMIX_PATH)")
+    parser.add_argument("--spherohq-path",  default=None,
+                        help="SpheroHQ dataset root (overrides $SPHEROHQ_PATH)")
     a = parser.parse_args()
 
     set_seeds(SEED)
 
-    stage_cfg = STAGE_CFG[a.stage]
+    stage_cfg = dict(STAGE_CFG[a.stage])  # copy so CLI override doesn't mutate module
+    if a.stage == "pretrain" and a.spheromix_path:
+        stage_cfg["dataset"] = a.spheromix_path
+    if a.stage == "finetune" and a.spherohq_path:
+        stage_cfg["dataset"] = a.spherohq_path
+    if not stage_cfg["dataset"]:
+        parser.error(
+            f"Dataset path for --stage {a.stage} is empty. "
+            f"Set ${'SPHEROMIX_PATH' if a.stage=='pretrain' else 'SPHEROHQ_PATH'} "
+            f"or pass --{'spheromix-path' if a.stage=='pretrain' else 'spherohq-path'}.")
 
     micro = dict(MICRO_DEFAULT[a.model])
     if a.per_gpu_bs is not None: micro["bs"] = a.per_gpu_bs
@@ -200,9 +215,8 @@ def main():
         return
 
     sys.argv = argv
-    repo_root = Path("/disk1/prusek/SpheroSeg/code").resolve()
-    sys.path.insert(0, str(repo_root))
-    sys.path.insert(0, str(repo_root / "src" / "training"))
+    sys.path.insert(0, str(REPO_ROOT))
+    sys.path.insert(0, str(REPO_ROOT / "src" / "training"))
 
     print(f"[a3/{a.stage}] launching CNN_main_spheroid.main() for model={a.model}")
     sys.stdout.flush()

@@ -14,7 +14,7 @@ import torch
 import torch.nn.functional as F
 import cv2 as cv
 
-REPO_ROOT = Path("/disk1/prusek/SpheroSeg/code")
+REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "src" / "training"))
 
@@ -52,13 +52,14 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--weights",   required=True)
     p.add_argument("--pretrained", default="nvidia/segformer-b0-finetuned-ade-512-512")
-    p.add_argument("--dataset",   default="/disk1/prusek/SpheroSeg/data/SpheroMix")
+    p.add_argument("--dataset",   default=os.environ.get("SPHEROMIX_PATH"),
+                   help="Path to dataset root (env: SPHEROMIX_PATH)")
     p.add_argument("--output",    required=True)
     p.add_argument("--batch_size", type=int, default=4)
     p.add_argument("--num_workers", type=int, default=4)
     a = p.parse_args()
-
-    os.environ.setdefault("HF_HOME", "/disk2/prusek/svoc/.hf_cache")
+    if not a.dataset:
+        p.error("--dataset is required (or set SPHEROMIX_PATH env var)")
 
     # Load model
     print(f"[eval] loading SegFormer pretrained={a.pretrained}")
@@ -95,7 +96,7 @@ def main():
             gts  = (masks > 0.5).squeeze(1).cpu().numpy()
             for i in range(pred.shape[0]):
                 gi = batch_idx * a.batch_size + i
-                fname = ds.image_files[gi].name if gi < len(ds.image_files) else f"idx{gi}"
+                fname = ds.valid_files[gi][0].name if gi < len(ds.valid_files) else f"idx{gi}"
                 iou, dice, prec, rec = per_image_metrics(pred[i], gts[i])
                 rows.append({"file": fname, "iou": iou, "dice": dice, "precision": prec, "recall": rec, "is_hq": is_hq_test(fname)})
 

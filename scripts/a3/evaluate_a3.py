@@ -20,7 +20,7 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
-REPO_ROOT = Path("/disk1/prusek/SpheroSeg/code")
+REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "src" / "training"))
 
@@ -106,7 +106,7 @@ def evaluate(weights_path, model_key, dataset_path, device='cuda:0', batch_size=
             gts   = (masks > 0.5).squeeze(1).cpu().numpy()
             for i in range(preds.shape[0]):
                 global_idx = batch_idx*batch_size + i
-                fname = ds.image_files[global_idx].name if global_idx < len(ds.image_files) else f"idx{global_idx}"
+                fname = ds.valid_files[global_idx][0].name if global_idx < len(ds.valid_files) else f"idx{global_idx}"
                 iou,dice,prec,rec = per_image_metrics(preds[i], gts[i])
                 rows.append({"file": fname, "iou": iou, "dice": dice, "precision": prec, "recall": rec, "is_hq": is_hq_test(fname)})
 
@@ -140,11 +140,15 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--weights", required=True)
     p.add_argument("--model",   required=True, choices=list(CTORS.keys()))
-    p.add_argument("--dataset", default="/disk1/prusek/SpheroSeg/data/SpheroMix")
+    p.add_argument("--dataset", default=os.environ.get("SPHEROMIX_PATH"),
+                   help="Path to SpheroMix dataset root (env: SPHEROMIX_PATH). "
+                        "For HQ-only or DTS-only eval, point at SpheroHQ / DTS root instead.")
     p.add_argument("--output",  required=True)
     p.add_argument("--batch_size", type=int, default=4)
     p.add_argument("--num_workers", type=int, default=4)
     args = p.parse_args()
+    if not args.dataset:
+        p.error("--dataset is required (or set SPHEROMIX_PATH env var)")
 
     summary = evaluate(args.weights, args.model, args.dataset,
                        batch_size=args.batch_size, num_workers=args.num_workers)
